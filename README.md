@@ -23,6 +23,3 @@ For a complete UI version, view the code in `gh-pages` branch and the demo [here
 See [here](https://github.com/yunchih/cooc-knowledge-map-editor/blob/master/data/tree-data-taiwan-history.json)
 
   
-## JSON 形式
-
-[請見此](https://github.com/yunchih/cooc-knowledge-map-editor/blob/master/data/tree-data-taiwan-history.json)
