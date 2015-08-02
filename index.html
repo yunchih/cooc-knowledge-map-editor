@@ -5,11 +5,12 @@
          <title>酷課學習知識地圖編輯器</title>
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link rel="stylesheet" href="tree.css">
-        <link rel="stylesheet" href="layout.css">
+        <link rel="stylesheet" href="css/tree.css">
+        <link rel="stylesheet" href="css/layout.css">
     </head>
     <body>
 
+         <!-- 右鍵觸發的 menu -->
         <div id="context-menu">
           <ul class="dropdown-menu" role="menu">
             <li><a tabindex="-1" id="modify">修改</a></li>
@@ -19,6 +20,8 @@
              <li><a tabindex="-1" id="delete">刪除節點</a></li>
           </ul>
         </div>
+
+        <!-- 節點編輯對話窗  -->
 
         <div id="modal" class="modal fade">
           <div class="modal-dialog">
@@ -40,39 +43,21 @@
           </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
 
-        <nav class="navbar navbar-inverse">
-          <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-              <a class="navbar-brand" href="#">酷課學習知識地圖編輯器</a>
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav navbar-right">
-                <li>
-                  <button type="button" class="btn btn-primary nav-button" id="export" data-toggle="modal" data-target="#modal-JSON-import">匯入 JSON</button>
-                </li>
-                <li>
-                  <button type="button" class="btn btn-primary nav-button" id="export" data-toggle="modal" data-target="#modal-JSON-export">輸出 JSON</button>
-                </li>
-              </ul>
-            </div><!-- /.navbar-collapse -->
-          </div><!-- /.container-fluid -->
-        </nav>
-
         <section class="container">
+            <h1 style="text-align:center">編輯請按右鍵</h1>
+            <button type="button" class="btn btn-default btn-lg btn-block" id="export" data-toggle="modal"  >匯出 JSON</button>
             <div class="tree"></div>
-
         </section>
           
 
+
+            <!-- 匯出 JSON 對話窗 -->
         <div id="modal-JSON-export" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h1>JSON</h1>
+                <h1>匯出 JSON</h1>
               </div>
               <div class="modal-body">
                 <form class="contact" name="contact">
@@ -82,35 +67,9 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">完成</button>
               </div>
-            </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
-        <div id="modal-JSON-import" class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h1 id="welcome">歡迎使用知識地圖編輯器</h1>
-              </div>
-              <div class="modal-body">
-                <button type="button" class="btn btn-primary btn-lg btn-block" id="load-default" >載入範例 JSON</button>
-                <button type="button" class="btn btn-default btn-lg btn-block" id="load-custom">自己匯入</button>
-
-                <form class="form" id="form-load-custom">
-                  <input type="text" class="form-control input-lg" placeholder="檔案 URL" >
-                  <button type="submit" class="btn btn-success btn-lg btn-block" placeholder="URL....">匯入</button>
-                </form>
-
-                <div class="alert alert-danger" role="alert">
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                  <span class="sr-only">Ops:</span>
-                  找不到此檔案
-                </div>
-
-              </div>
-            </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+            </div>
+          </div>
+        </div>
 
         <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
