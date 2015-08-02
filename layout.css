@@ -1,0 +1,21 @@
+.nav-button {
+	margin: 8px;
+}
+
+#form-load-custom {
+	margin: 0 auto;
+}
+
+.alert {
+	margin-top: 10px;
+}
+#form-load-custom > button {
+	margin: 10px 0px 10px 0px;
+}
+#welcome {
+	text-align: center;
+}
+
+#load-custom {
+	margin-top: 10px;
+}
