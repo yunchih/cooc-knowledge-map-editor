@@ -40,7 +40,6 @@
         init: function(data) {
             var rootNode = this.import.buildTree(data);
             this.import.buildHTML(rootNode);
-            this.export.prepareJSON();
         },
 
         import: {
@@ -111,7 +110,6 @@
 
             loadJSON: function (jsonFilePath) {
                 
-                console.log(jsonFilePath);
                 $.getJSON(jsonFilePath, function(data) {
 
                     // Before transforming our data, we shall initialize the necessary utililies
@@ -380,7 +378,85 @@
         }
     };
 
+    var UI = {
 
+        importDialog: function () {
+             /*
+              * Show initial import prompt 
+              */
+            $('#import').on('click', function() {
+
+                // If there is unexported data
+                if( ! $.isEmptyObject(tree.map) ){
+                    $("#modal-export-prompt").modal('show');
+                }
+
+                var importModal = $('#modal-JSON-import');
+                importModal.modal('show');  
+                importModal.find('.alert').hide();
+                importModal.find('#form-load-custom').hide();
+                importModal.find('#load-default').show();
+                importModal.find('#load-custom').show(); 
+            });
+
+                    
+        },
+
+        importWarning: function () {
+            $("#modal-export-prompt .btn-danger").click(function () {
+                // Clean our map
+                map = {}; 
+            });
+
+            $("#modal-export-prompt .btn-success").click(function () {
+                $('#export').trigger('click');
+            })
+        },
+        
+        importDialogChooseCustom: function () {
+             /*
+              * Show input field when user choose to import custom JSON
+              */
+            $( "#load-custom" ).on( "click", function() {
+                $("#form-load-custom").show('fast');
+                $("#load-default").hide('fast');
+                $(this).hide('fast');
+            });            
+        },
+
+        importCustom: function () {
+            /*
+             * Read custom JSON URL and import it
+             */
+            $( "#form-load-custom > .btn" ).on( "click" , function(e) {
+                e.preventDefault();
+                console.log("Loading custom JSON");
+                dataOp.import.loadJSON($("#form-load-custom > input").val());
+            });
+        },
+
+        importDefault: function () {
+            /*
+             * Load default JSON file
+             */
+            $( "#load-default" ).on( "click", function() {
+                console.log("Loading default JSON");
+                dataOp.import.loadJSON(tree.jsonFilePath);
+            });
+        },
+
+        export: function () {
+            /*
+             * Export JSON
+             */
+            $('#export').on('click', function() {
+                dataOp.export.prepareJSON();
+                $('modal-JSON-export').modal('show');
+            });
+        }
+    };
+
+    // Executed on document ready
     $(function() {
         
         /* Initializing global configurations */
@@ -390,47 +466,14 @@
         nodeOp.init();
 
         /* ----------  UI  ---------- */
+        UI.importDialog();
+        UI.importDialogChooseCustom();
+        UI.importWarning();
+        UI.importCustom();
+        UI.importDefault();
+        UI.export();
 
-         /*
-          * Show initial import prompt 
-          */
-        $('#modal-JSON-import').on('show.bs.modal', function() {
-            $(this).find('.alert').hide();
-            $(this).find('#form-load-custom').hide();
-            // $(this).find('#load-default').show('fast');
-            // $(this).find('#load-custom').show('fast');
-        })
-
-        $('#modal-JSON-import').modal('show');
-
-
-         /*
-          * Show input field when user choose to import custom JSON
-          */
-        $( "#load-custom" ).on( "click", function() {
-            $("#form-load-custom").show('fast');
-            $("#load-default").hide('fast');
-            $(this).hide('fast');
-        });
-
-        /*
-         * Read custom JSON URL and import it
-         */
-        $( "#form-load-custom > .btn" ).on( "click" , function(e) {
-            e.preventDefault();
-            console.log("Loading custom JSON");
-            dataOp.import.loadJSON($("#form-load-custom > input").val());
-        });
-
-        /*
-         * Load default JSON file
-         */
-        $( "#load-default" ).on( "click", function() {
-            console.log("Loading default JSON");
-            dataOp.import.loadJSON(tree.jsonFilePath);
-        });
-
-
+        $('#import').trigger('click');
     });
 
 }());

@@ -51,10 +51,10 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav navbar-right">
                 <li>
-                  <button type="button" class="btn btn-primary nav-button" id="export" data-toggle="modal" data-target="#modal-JSON-import">匯入 JSON</button>
+                  <button type="button" class="btn btn-primary nav-button" id="import" data-toggle="modal" id="button-import">匯入 JSON</button>
                 </li>
                 <li>
-                  <button type="button" class="btn btn-primary nav-button" id="export" data-toggle="modal" data-target="#modal-JSON-export">輸出 JSON</button>
+                  <button type="button" class="btn btn-primary nav-button" id="export" data-toggle="modal" id="button-import">輸出 JSON</button>
                 </li>
               </ul>
             </div><!-- /.navbar-collapse -->
@@ -107,6 +107,20 @@
                   找不到此檔案
                 </div>
 
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div id="modal-export-prompt" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 id="welcome">您現在的知識地圖會被覆蓋<br/>是否輸出？</h1>
+              </div>
+              <div class="modal-body">
+                <button type="button" class="btn btn-success btn-lg btn-block" data-dismiss="modal">是</button>
+                <button type="button" class="btn btn-danger btn-lg btn-block" data-dismiss="modal">否</button>
               </div>
             </div><!-- /.modal-content -->
           </div><!-- /.modal-dialog -->
