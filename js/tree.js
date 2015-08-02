@@ -309,7 +309,7 @@
         },
 
         makeUncollapsible: function($node) {
-            $node.has('li').removeClass('parent_li').find(' > span').attr('title', '');
+            $node.has('li').removeClass('parent_li').find(' > span').attr('title', '葉節點');
         }
     };
 
