@@ -119,3 +119,28 @@
 .tree .node-6:hover {
     background-color: #bdfff2;
 }
+
+@-webkit-keyframes shake {
+    0% { -webkit-transform: translate(0px); }
+    20% { -webkit-transform: translate(10px); }
+    40% { -webkit-transform: translate(-10px); }
+    51% { -webkit-transform: translate(6px); }
+    70% { -webkit-transform: translate(-6px); }
+    90% { -webkit-transform: translate(3px); }
+    100% { -webkit-transform: translate(0px); }
+}
+/*for mozilla browser*/
+@-moz-keyframes shake { 
+    0% { -moz-transform: translate(0px); }
+    20% { -moz-transform: translate(10px); }
+    40% { -moz-transform: translate(-10px); }
+    51% { -moz-transform: translate(6px); }
+    70% { -moz-transform: translate(-6px); }
+    90% { -moz-transform: translate(3px); }
+    100% { -moz-transform: translate(0px); }
+}
+
+.shake {
+    -webkit-animation: shake 0.7s;/*for webkit browsers*/
+    -moz-animation: shake 0.7s;/*for mozilla browser*/
+}
