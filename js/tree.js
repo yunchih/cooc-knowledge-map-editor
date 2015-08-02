@@ -110,16 +110,19 @@
 
 
             loadJSON: function (jsonFilePath) {
-                        
+                
+                console.log(jsonFilePath);
                 $.getJSON(jsonFilePath, function(data) {
 
+                    // Before transforming our data, we shall initialize the necessary utililies
                     dataOp.init(data);
                     plugin.init();
-                    console.log(data);
-                }).fail(function() {
-                    $(".alert").show('fast');
-                }).success(function(){
                     $('#modal-JSON-import').modal('hide');
+
+                }).fail(function() {
+                    $(".alert").show('fast',function(){
+                        $(this).addClass('shake');
+                    });
                 });
             }
         },
@@ -161,6 +164,8 @@
              */
             transformIntoArray: function () {
                 return $.map(tree.map, function(value, key) {
+                    // We don't we children in our JSON
+                    delete value.children;
                     return [value];
                 });
             },
@@ -172,6 +177,8 @@
                 var that = this;
                 $( "#export" ).on( "click", function() {
                     $('#textarea-JSON-export').val( JSON.stringify( that.transformIntoArray() ) );
+                    console.log("Exporting: ");
+                    console.log(that.transformIntoArray());
                 });
             }
         }
@@ -390,8 +397,8 @@
         $('#modal-JSON-import').on('show.bs.modal', function() {
             $(this).find('.alert').hide();
             $(this).find('#form-load-custom').hide();
-            $(this).find('#load-default').show('fast');
-            $(this).find('#load-custom').show('fast');
+            // $(this).find('#load-default').show('fast');
+            // $(this).find('#load-custom').show('fast');
         })
 
         $('#modal-JSON-import').modal('show');
@@ -409,8 +416,9 @@
         /*
          * Read custom JSON URL and import it
          */
-        $( "#form-load-custom > button" ).on( "click" , function() {
-            console.log("Loading custom");
+        $( "#form-load-custom > .btn" ).on( "click" , function(e) {
+            e.preventDefault();
+            console.log("Loading custom JSON");
             dataOp.import.loadJSON($("#form-load-custom > input").val());
         });
 
@@ -418,6 +426,7 @@
          * Load default JSON file
          */
         $( "#load-default" ).on( "click", function() {
+            console.log("Loading default JSON");
             dataOp.import.loadJSON(tree.jsonFilePath);
         });
 
