@@ -4,7 +4,7 @@
 
         init: function() {
             /* Configurations */
-            this.jsonFilePath     = 'data/tree-data-taiwan-history.json';
+            this.jsonFilePath     = 'data/tree-data.json';
             this.root_icon        = "glyphicon-folder-open";
             this.node_minus_icon  = "glyphicon-minus";
             this.node_plus_icon   = "glyphicon-plus";
