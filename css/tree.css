@@ -36,7 +36,7 @@
     top:24px;
     width:25px
 }
-.tree li span {
+.tree .node{
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     border:1px solid #999;
@@ -45,8 +45,14 @@
     padding:3px 8px;
     text-decoration:none;
     position: relative;
-    cursor:pointer
+    cursor:pointer;
+    -webkit-transition: background-color 100ms linear;
+    -moz-transition: background-color 100ms linear;
+    -o-transition: background-color 100ms linear;
+    -ms-transition: background-color 100ms linear;
+    transition: background-color 100ms linear;
 }
+
 .tree>ul>li::before, .tree>ul>li::after {
     border:0
 }
@@ -65,21 +71,51 @@
 // Color Pallete
 // http://www.colorcombos.com/color-schemes/211/ColorCombo211.html
 */
-.node-0 {
-    background-color: #FFC600;
+.tree .glyphicon-leaf {
+    color: green;
 }
-.node-1 {
-    background-color: #FFD133;
+.tree .node-0 {
+    background-color: #ffa8bb;
+    font-size: 17px;
 }
-.node-2 {
-    background-color: #FFD74D;
+.tree .node-1 {
+    background-color: #ffb2a8;
 }
-.node-3 {
-    background-color: #FFDD66;
+.tree .node-2 {
+    background-color: #ffcfa8;
 }
-.node-4 {
-    background-color: #FFE58C;
+.tree .node-3 {
+    background-color: #ffeca8;
 }
-.node-5 {
-    background-color: #FFF1BF;
+.tree .node-4 {
+    background-color: #f5ffa8;
+}
+.tree .node-5 {
+    background-color: #d8ffa8;
+}
+.tree .node-6 {
+    background-color: #f0fffc;
+}
+
+.tree .node-0:hover {
+    background-color: #ff708f;
+    font-size: 17px;
+}
+.tree .node-1:hover {
+    background-color: #ff8170;
+}
+.tree .node-2:hover {
+    background-color: #ffb070;
+}
+.tree .node-3:hover {
+    background-color: #ffe070;
+}
+.tree .node-4:hover {
+    background-color: #efff70;
+}
+.tree .node-5:hover {
+    background-color: #bfff70;
+}
+.tree .node-6:hover {
+    background-color: #bdfff2;
 }
