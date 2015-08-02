@@ -45,8 +45,6 @@
     padding:3px 8px;
     text-decoration:none;
     position: relative;
-}
-.tree li.parent_li>span {
     cursor:pointer
 }
 .tree>ul>li::before, .tree>ul>li::after {
