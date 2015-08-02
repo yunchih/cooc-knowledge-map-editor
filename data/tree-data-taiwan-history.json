@@ -1,0 +1,218 @@
+[
+  {
+    "name": "歷史",
+    "parent": "",
+    "value": 10,
+    "color": "#434399",
+    "type": ""
+    
+  },
+  {
+    "name": "台灣史",
+    "parent": "歷史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "早期台灣",
+    "parent": "台灣史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "史前時期",
+    "parent": "早期台灣",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "史前文化",
+    "parent": "史前時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "原住民文化",
+    "parent": "早期台灣",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "原住民族的社會",
+    "parent": "原住民文化",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "原住民族的經濟與宗教",
+    "parent": "原住民族的社會",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "國際競逐",
+    "parent": "早期台灣",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "海商在臺澎的活動",
+    "parent": "國際競逐",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "荷蘭治理下的臺灣",
+    "parent": "海商在臺澎的活動",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "海上來的紅毛人",
+    "parent": "荷蘭治理下的臺灣",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "荷西統治",
+    "parent": "早期台灣",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "鄭氏時期的經營",
+    "parent": "荷西統治",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "清朝統治時期",
+    "parent": "台灣史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "鄭氏統治時期",
+    "parent": "清朝統治時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "政治經濟的發展",
+    "parent": "清朝統治時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "社會文化的發展",
+    "parent": "清朝統治時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "日本統治時期",
+    "parent": "台灣史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "開港與近代化發展",
+    "parent": "日本統治時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "殖民統治的建立",
+    "parent": "日本統治時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "戰爭時期的社會",
+    "parent": "日本統治時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中華民國時期",
+    "parent": "台灣史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中華民國社會文化的變遷",
+    "parent": "中華民國時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "從威權走向民主政治",
+    "parent": "中華民國時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中華民國經濟成長與挑戰",
+    "parent": "中華民國時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中華民國社會結構的變遷與多元化發展",
+    "parent": "中華民國經濟成長與挑戰",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  }
+]

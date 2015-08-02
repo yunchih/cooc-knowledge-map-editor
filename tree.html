@@ -1,0 +1,64 @@
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+         <title>tree</title>
+
+        <!-- <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css"> -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="tree.css">
+
+    </head>
+    <body>
+
+        <div id="context-menu">
+          <ul class="dropdown-menu" role="menu">
+            <li><a tabindex="-1" id="modify">修改</a></li>
+             <li class="divider"></li>
+             <li><a tabindex="-1" id="add">新增子節點</a></li>
+             <li class="divider"></li>
+             <li><a tabindex="-1" id="delete">刪除節點</a></li>
+          </ul>
+        </div>
+
+        <div id="modal" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 id="modal-title"></h4>
+              </div>
+              <div class="modal-body">
+                <form class="contact" name="contact">
+                    <input class="form-control input-lg" type="text" id="modal-input" class="input-lg">
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal-submit" data-dismiss="modal">確定</button>
+                <button type="button" class="btn btn-default" id="modal-cancel" data-dismiss="modal">取消</button>
+              </div>
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
+        <div class="tree well"></div>
+       
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="js/contextmenu.js" ></script>   
+        <script src="js/tree.js" ></script>   
+        
+    </body>
+</html>
+<!-- 
+$('.node').contextmenu({
+        target: '#context-menu',
+
+        onItem: function (context, e) {
+          alert($(e.target).text());
+        }
+    });
+
+<span title="Collapse this branch" class="node" data-toggle="context"><i class="icon-minus-sign node-2"></i>早期台灣</span> -->

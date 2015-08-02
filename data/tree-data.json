@@ -1,0 +1,1139 @@
+[
+  {
+    "name": "歷史",
+    "parent": "",
+    "value": 10,
+    "color": "#434399",
+    "type": ""
+    
+  },
+  {
+    "name": "台灣史",
+    "parent": "歷史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "早期台灣",
+    "parent": "台灣史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "史前時期",
+    "parent": "早期台灣",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "史前文化",
+    "parent": "史前時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "原住民文化",
+    "parent": "早期台灣",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "原住民族的社會",
+    "parent": "原住民文化",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "原住民族的經濟與宗教",
+    "parent": "原住民族的社會",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "國際競逐",
+    "parent": "早期台灣",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "海商在臺澎的活動",
+    "parent": "國際競逐",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "荷蘭治理下的臺灣",
+    "parent": "海商在臺澎的活動",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "海上來的紅毛人",
+    "parent": "荷蘭治理下的臺灣",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "荷西統治",
+    "parent": "早期台灣",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "鄭氏時期的經營",
+    "parent": "荷西統治",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "清朝統治時期",
+    "parent": "台灣史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "鄭氏統治時期",
+    "parent": "清朝統治時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "政治經濟的發展",
+    "parent": "清朝統治時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "社會文化的發展",
+    "parent": "清朝統治時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "日本統治時期",
+    "parent": "台灣史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "開港與近代化發展",
+    "parent": "日本統治時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "殖民統治的建立",
+    "parent": "日本統治時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "戰爭時期的社會",
+    "parent": "日本統治時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中華民國時期",
+    "parent": "台灣史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中華民國社會文化的變遷",
+    "parent": "中華民國時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "從威權走向民主政治",
+    "parent": "中華民國時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中華民國經濟成長與挑戰",
+    "parent": "中華民國時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中華民國社會結構的變遷與多元化發展",
+    "parent": "中華民國經濟成長與挑戰",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中國史",
+    "parent": "歷史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "先秦時期",
+    "parent": "中國史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "教育文化的發展",
+    "parent": "先秦時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "史前文化",
+    "parent": "先秦時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "夏商周三代的傳承",
+    "parent": "先秦時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "春秋戰國的政治與社會經濟劇變",
+    "parent": "先秦時期",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "秦漢到隋唐",
+    "parent": "中國史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "華夏文明的開展與諸子學的發展",
+    "parent": "秦漢到隋唐",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "秦漢統一帝國體制與對外開拓",
+    "parent": "秦漢到隋唐",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "從分裂到帝國的重建",
+    "parent": "秦漢到隋唐",
+    "value": 10,
+    "color": "gray",
+    "type": "red"
+    
+  },
+  {
+    "name": "秦漢學術思想",
+    "parent": "秦漢到隋唐",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "魏晉玄學文化",
+    "parent": "秦漢學術思想",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "宋元明與盛清",
+    "parent": "中國史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "民族互動與文化傳播交流",
+    "parent": "宋元明與盛清",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "夷夏爭勝與新統治形態",
+    "parent": "宋元明與盛清",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "經濟繁榮社會變遷與文化新貌",
+    "parent": "宋元明與盛清",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "儒學的復興",
+    "parent": "宋元明與盛清",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "家族倫理的提倡",
+    "parent": "儒學的復興",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "晚清的變局",
+    "parent": "中國史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "民間娛樂的盛行與科技的發達",
+    "parent": "晚清的變局",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "帝國衰微西力東漸",
+    "parent": "晚清的變局",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "政治改革與今文經的復興",
+    "parent": "晚清的變局",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中華民國的建立",
+    "parent": "中國史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "革命的發展",
+    "parent": "中華民國的建立",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "對傳統文化的反省",
+    "parent": "革命的發展",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "國家創建",
+    "parent": "中華民國的建立",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "國家的統一",
+    "parent": "中華民國的建立",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "對日抗戰",
+    "parent": "國家的統一",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "戰後復員",
+    "parent": "中華民國的建立",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "國共內戰",
+    "parent": "戰後復員",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "社會經濟變遷",
+    "parent": "中華民國的建立",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "新文化的引介",
+    "parent": "社會經濟變遷",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中共黨國體制的建立與發展",
+    "parent": "中國史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "農村困乏與通貨膨脹",
+    "parent": "中共黨國體制的建立與發展",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "建立中央集權體制",
+    "parent": "中共黨國體制的建立與發展",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "文化大革命的發生和影響",
+    "parent": "中共黨國體制的建立與發展",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "混合經濟",
+    "parent": "中共黨國體制的建立與發展",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "計畫經濟與改革開放",
+    "parent": "中共黨國體制的建立與發展",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "人口壓力與開放後政治經濟新挑戰",
+    "parent": "中共黨國體制的建立與發展",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "世界史",
+    "parent": "歷史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "歐洲",
+    "parent": "世界史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中共外交政策與兩岸關係演變",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "上古希臘羅馬文明的形成",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "上古希羅馬文明的發展",
+    "parent": "上古希臘羅馬文明的形成",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "基督教文明的源頭",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "基督教文明傳播發展",
+    "parent": "基督教文明的源頭",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中古歐洲社會",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "近代歐洲的興起與擴張",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "古典文明的復興與創新",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "雙元革命的發展",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "雙元革命政治經濟的巨變",
+    "parent": "雙元革命的發展",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "近代民主與民族國家的建立",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "新思潮的流行",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "新帝國主義的發展",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "世界大戰的爆發",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "俄國革命",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "共產政權的發展",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "冷戰的形成與新思潮",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "新文藝的發展",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "後冷戰的世界政局發展",
+    "parent": "歐洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "美國",
+    "parent": "世界史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "全球化的發展",
+    "parent": "美國",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "環保運動的興起",
+    "parent": "全球化的發展",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "美國獨立與制憲運動",
+    "parent": "美國",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "南北戰爭",
+    "parent": "美國",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "戰後重建",
+    "parent": "南北戰爭",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "新帝國主義的發展",
+    "parent": "美國",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "美國夢的形塑",
+    "parent": "新帝國主義的發展",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "美國崛起",
+    "parent": "美國",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "美國獨霸政局的形成",
+    "parent": "美國崛起",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "拉丁美洲",
+    "parent": "世界史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "美國大眾文化的發展與影響",
+    "parent": "拉丁美洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "古文明的發展",
+    "parent": "拉丁美洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "地理大發現的影響",
+    "parent": "古文明的發展",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "殖民體制的建立",
+    "parent": "拉丁美洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "獨立運動的開展",
+    "parent": "殖民體制的建立",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "二戰後反殖民運動與",
+    "parent": "拉丁美洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "二戰後經濟改革",
+    "parent": "二戰後反殖民運動與",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "伊斯蘭世界",
+    "parent": "世界史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "當代拉丁美洲的文化發展",
+    "parent": "伊斯蘭世界",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "兩河流域古文明的出現與發展",
+    "parent": "伊斯蘭世界",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "伊斯蘭文明的創建",
+    "parent": "伊斯蘭世界",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "伊斯蘭帝國的擴張",
+    "parent": "伊斯蘭文明的創建",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "近代伊斯蘭帝國的興衰",
+    "parent": "伊斯蘭世界",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "泛伊斯蘭主義的出現",
+    "parent": "伊斯蘭世界",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "泛伊斯蘭主義對西方文明的回應",
+    "parent": "泛伊斯蘭主義的出現",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "非洲",
+    "parent": "世界史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "當代伊斯蘭世界受現代化的影響",
+    "parent": "非洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "上古文明的出現與發展",
+    "parent": "非洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "早期基督教與伊斯蘭教的傳入與影響",
+    "parent": "非洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "地理大發現與新帝國主義的影響",
+    "parent": "非洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "非洲原始部落主義與歐洲殖民主義的衝突",
+    "parent": "非洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "當代非洲的藝術運動表現",
+    "parent": "非洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "當代非洲的文化困境",
+    "parent": "當代非洲的藝術運動表現",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "上古文明的出現",
+    "parent": "非洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "上古文明的特色",
+    "parent": "上古文明的出現",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "古典時期的宗教社會與文化發展",
+    "parent": "非洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "中古時期多元文化",
+    "parent": "非洲",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "新宗教的發展",
+    "parent": "中古時期多元文化",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "日本",
+    "parent": "世界史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "西方文化的衝擊與回應",
+    "parent": "日本",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "天皇制度",
+    "parent": "日本",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "幕府體制",
+    "parent": "天皇制度",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "明治維新",
+    "parent": "日本",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "亞細亞主義",
+    "parent": "明治維新",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "左右派思想的對立",
+    "parent": "亞細亞主義",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "冷戰格局下的日本經濟奇蹟",
+    "parent": "日本",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "全球化對日本的挑戰",
+    "parent": "日本",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "朝鮮",
+    "parent": "世界史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "李朝的文化發展與儒學教育",
+    "parent": "朝鮮",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "朝鮮開港後的文化發展",
+    "parent": "朝鮮",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "冷戰格局下的韓國發展",
+    "parent": "朝鮮",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "越南",
+    "parent": "世界史",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "全球化與韓國發展",
+    "parent": "越南",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  },
+  {
+    "name": "安南建國前的文化發展",
+    "parent": "越南",
+    "value": 10,
+    "color": "",
+    "type": ""
+    
+  }
+  
+]
