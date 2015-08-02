@@ -115,11 +115,11 @@
 
                     dataOp.init(data);
                     plugin.init();
-
+                    console.log(data);
                 }).fail(function() {
                     $(".alert").show('fast');
                 }).success(function(){
-                    $('modal-JSON-import').modal('hide');
+                    $('#modal-JSON-import').modal('hide');
                 });
             }
         },
@@ -375,7 +375,7 @@
 
 
     $(function() {
-
+        
         /* Initializing global configurations */
         tree.init();
 
@@ -390,8 +390,8 @@
         $('#modal-JSON-import').on('show.bs.modal', function() {
             $(this).find('.alert').hide();
             $(this).find('#form-load-custom').hide();
-            $(this).find('#load-default').show();
-            $(this).find('#load-custom').show();
+            $(this).find('#load-default').show('fast');
+            $(this).find('#load-custom').show('fast');
         })
 
         $('#modal-JSON-import').modal('show');
@@ -410,6 +410,7 @@
          * Read custom JSON URL and import it
          */
         $( "#form-load-custom > button" ).on( "click" , function() {
+            console.log("Loading custom");
             dataOp.import.loadJSON($("#form-load-custom > input").val());
         });
 
@@ -418,7 +419,6 @@
          */
         $( "#load-default" ).on( "click", function() {
             dataOp.import.loadJSON(tree.jsonFilePath);
-            $('#modal-JSON-import').modal('hide');
         });
 
 
