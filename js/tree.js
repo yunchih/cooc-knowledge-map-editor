@@ -45,9 +45,9 @@
 
         import: {
 
-			/*
-			 * Recursively tranverse the children array of each node and turn them into HTML
-			 */
+            /*
+             * Recursively tranverse the children array of each node and turn them into HTML
+             */
             buildNode: function _buildNode(node, dept) {
 
                 tree.html += ('<span class="node node-' + dept + '" data-toggle="context"><i class="glyphicon ' + tree.getIcon(node) + '"></i>' + node.name + '</span> ');
@@ -71,12 +71,12 @@
 
                 var rootNode = "";
 
-				// Transform the input data into a map, whose key is the name of the node 
+                // Transform the input data into a map, whose key is the name of the node 
                 $.each(data, function(key, node) {
                     tree.map[node.name] = node;
                 });
 
-				// Build `children` array for each node
+                // Build `children` array for each node
                 $.each(data, function(index, node) {
 
                     var parentNode = tree.map[node.parent];
@@ -103,7 +103,7 @@
                 this.buildNode(tree.map[rootNode], 0);
                 tree.html += "</li></ul>";
 
-				// Apply the collected HTML into our page
+                // Apply the collected HTML into our page
                 $(".tree").append(tree.html);
 
             },
@@ -126,25 +126,25 @@
 
         export: {
 
-			/*
-			 * Add new node into our map
-			 */
+            /*
+             * Add new node into our map
+             */
             add: function(you, yourParent) {
                 var newNode = {};
 
-				// Assign default value to the new node
+                // Assign default value to the new node
                 $.extend(newNode, tree.jsonModelDefault);
 
                 newNode.name = you.text();
                 newNode.parent = yourParent.text();
 
-				// Add it into our map ( which will be exported )
+                // Add it into our map ( which will be exported )
                 tree.map[you.text()] = newNode;
             },
 
-			/*
-			 * remove node from our map
-			 */
+            /*
+             * remove node from our map
+             */
             remove: function _remove (you) {
 
                 if( you && tree.map[ you ].children ){
@@ -156,18 +156,18 @@
                 delete tree.map[you];
             },
 
-			/*
-			 * Transform the values of data map into plain array 
-			 */
+            /*
+             * Transform the values of data map into plain array 
+             */
             transformIntoArray: function () {
                 return $.map(tree.map, function(value, key) {
                     return [value];
                 });
             },
 
-			/*
-			 * Export the JSON and throw it into the export textarea
-			 */
+            /*
+             * Export the JSON and throw it into the export textarea
+             */
             prepareJSON: function () {
                 var that = this;
                 $( "#export" ).on( "click", function() {
@@ -187,10 +187,10 @@
             this.modal.process();
         },
 
-		/*
-		 * A node is collapsible if it is not a leaf
-		 * When user click on a collapsible node, we toggle opening/closing the node
-		 */
+        /*
+         * A node is collapsible if it is not a leaf
+         * When user click on a collapsible node, we toggle opening/closing the node
+         */
         collapsible: function() {
 
             nodeOp.makeCollapsible($('.tree li').has('li'));
@@ -207,13 +207,13 @@
             });
         },
 
-		/*
-		 * context menu is activated when user right click on a node
-		 */
+        /*
+         * context menu is activated when user right click on a node
+         */
         contextMenu: function() {
 
-			// When user activate the contextmenu, we update the targetNode here
-			// Most of the operations apply changes to targetNode
+            // When user activate the contextmenu, we update the targetNode here
+            // Most of the operations apply changes to targetNode
             $('.node').on('contextmenu', function() {
                 /* Update targetNode ( the one on which user is right clicking ) */
                 tree.targetNode = this;
@@ -227,41 +227,41 @@
 
                 target: '#context-menu',
 
-				
-				/*
-				 * This function is activated when user click an option on the context menu.
-				 */
+                
+                /*
+                 * This function is activated when user click an option on the context menu.
+                 */
                 onItem: function(context, e) {
 
                     var operation = e.target.id;
 
-					if (operation == "delete"){
+                    if (operation == "delete"){
 
-						// remove the node from tree
+                        // remove the node from tree
                         nodeOp.remove($(tree.targetNode).parent());
 
-						// remove the node from our data ( which will be exported )
+                        // remove the node from our data ( which will be exported )
                         dataOp.export.remove(nodeOp.getContent().text())
 
-					}
-					else {
+                    }
+                    else {
 
-						if (operation == "add") {
+                        if (operation == "add") {
 
-							nodeOp.add();
-							$modal.build('新增', '知識節點......');
+                            nodeOp.add();
+                            $modal.build('新增', '知識節點......');
 
-						} else {
+                        } else {
 
-							// Cache the content so that if user hit 'Cancel', we can recover the original content
-							nodeOp.contentCache = $(tree.targetNode).text();
-							$modal.build('修改', $(tree.targetNode).text());
+                            // Cache the content so that if user hit 'Cancel', we can recover the original content
+                            nodeOp.contentCache = $(tree.targetNode).text();
+                            $modal.build('修改', $(tree.targetNode).text());
 
-						}
+                        }
 
-						// Show modal so that user can edit a node
-						$('#modal').modal('show');
-					}
+                        // Show modal so that user can edit a node
+                        $('#modal').modal('show');
+                    }
 
                 }
             })
@@ -296,17 +296,17 @@
                 });
 
                 $('#modal-cancel').click(function() {
-					// If there is content cache, the user is giving up an edit.  
-					// So we recover the content of node he is editing.
-					if( nodeOp.contentCache ){
-						nodeOp.getContent().replaceWith(nodeOp.contentCache);
-						nodeOp.contentCache = "";
-					}
-					// The user is giving up creating a new node,
-					// so we simply remove the newly created node.
-					else{
-						nodeOp.remove($(tree.targetNode).closest('li'));
-					}
+                    // If there is content cache, the user is giving up an edit.  
+                    // So we recover the content of node he is editing.
+                    if( nodeOp.contentCache ){
+                        nodeOp.getContent().replaceWith(nodeOp.contentCache);
+                        nodeOp.contentCache = "";
+                    }
+                    // The user is giving up creating a new node,
+                    // so we simply remove the newly created node.
+                    else{
+                        nodeOp.remove($(tree.targetNode).closest('li'));
+                    }
                 });
             }
         },
@@ -316,7 +316,7 @@
 
         init: function() {
             this.newNode = "<li><span class='node' data-toggle='context' >" + tree.newNodeDefaultValue + "</span><ul></ul></li> ";
-			this.contentCache = "";
+            this.contentCache = "";
         },
 
         add: function() {
@@ -376,17 +376,17 @@
 
     $(function() {
 
-		/* Initializing global configurations */
+        /* Initializing global configurations */
         tree.init();
 
-		/* Initializing node operations */
+        /* Initializing node operations */
         nodeOp.init();
 
-		/* ----------  UI  ---------- */
+        /* ----------  UI  ---------- */
 
-		 /*
-		  * Show initial import prompt 
-		  */
+         /*
+          * Show initial import prompt 
+          */
         $('#modal-JSON-import').on('show.bs.modal', function() {
             $(this).find('.alert').hide();
             $(this).find('#form-load-custom').hide();
@@ -397,25 +397,25 @@
         $('#modal-JSON-import').modal('show');
 
 
-		 /*
-		  * Show input field when user choose to import custom JSON
-		  */
+         /*
+          * Show input field when user choose to import custom JSON
+          */
         $( "#load-custom" ).on( "click", function() {
             $("#form-load-custom").show('fast');
             $("#load-default").hide('fast');
             $(this).hide('fast');
         });
 
-		/*
-		 * Read custom JSON URL and import it
-		 */
+        /*
+         * Read custom JSON URL and import it
+         */
         $( "#form-load-custom > button" ).on( "click" , function() {
             dataOp.import.loadJSON($("#form-load-custom > input").val());
         });
 
-		/*
-		 * Load default JSON file
-		 */
+        /*
+         * Load default JSON file
+         */
         $( "#load-default" ).on( "click", function() {
             dataOp.import.loadJSON(tree.jsonFilePath);
             $('#modal-JSON-import').modal('hide');
