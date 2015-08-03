@@ -290,7 +290,10 @@
                     nodeOp.getContent().replaceWith(input);
                 });
 
-                $('#modal-submit').click(function() {
+                $('#modal-submit').click(function(e) {
+
+                    e.preventDefault();
+
                     // If user does not modify the default value when submitting, purge the newly created node.
                     if (!$(tree.targetNode).text() || $(tree.targetNode).text() == this.newNodeDefaultValue) {
                         nodeOp.remove($(tree.targetNode).closest('li'));
@@ -300,7 +303,10 @@
 
                 });
 
-                $('#modal-cancel').click(function() {
+                $('#modal-cancel').click(function(e) {
+
+                    e.preventDefault();
+
                     // If there is content cache, the user is giving up an edit.  
                     // So we recover the content of node he is editing.
                     if( nodeOp.contentCache ){
@@ -384,7 +390,9 @@
              /*
               * Show initial import prompt 
               */
-            $('#import').on('click', function() {
+            $('#import').on('click', function(e) {
+
+                e.preventDefault();
 
                 // If there is unexported data
                 if( ! $.isEmptyObject(tree.map) ){
@@ -403,12 +411,14 @@
         },
 
         importWarning: function () {
-            $("#modal-export-prompt .btn-danger").click(function () {
+            $("#modal-export-prompt .btn-danger").click(function (e) {
+                e.preventDefault();
                 // Clean our map
                 map = {}; 
             });
 
-            $("#modal-export-prompt .btn-success").click(function () {
+            $("#modal-export-prompt .btn-success").click(function (e) {
+                e.preventDefault();
                 $('#export').trigger('click');
             })
         },
