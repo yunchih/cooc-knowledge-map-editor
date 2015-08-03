@@ -286,6 +286,9 @@
                 });
 
                 $('#modal-submit').click(function() {
+
+                    e.preventDefault();
+
                     // If user does not modify the default value when submitting, purge the newly created node.
                     if (!$(tree.targetNode).text() || $(tree.targetNode).text() == this.newNodeDefaultValue) {
                         nodeOp.remove($(tree.targetNode).closest('li'));
@@ -295,7 +298,10 @@
 
                 });
 
-                $('#modal-cancel').click(function() {
+                $('#modal-cancel').click(function(e) {
+
+                    e.preventDefault();
+
                     // If there is content cache, the user is giving up an edit.  
                     // So we recover the content of node he is editing.
                     if( nodeOp.contentCache ){
