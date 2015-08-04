@@ -131,16 +131,20 @@
              * Add new node into our map
              */
             add: function(you, yourParent) {
+                
+                
                 var newNode = {};
-
+                
                 // Assign default value to the new node
                 $.extend(newNode, tree.jsonModelDefault);
 
-                newNode.name = you.text();
-                newNode.parent = yourParent.text();
+                newNode.name = you;
+                newNode.parent = yourParent;
 
                 // Add it into our map ( which will be exported )
-                tree.map[you.text()] = newNode;
+                tree.map[you] = newNode;
+                
+                return true;
             },
 
             /*
@@ -172,12 +176,7 @@
              * Export the JSON and throw it into the export textarea
              */
             prepareJSON: function () {
-                var that = this;
-                $( "#export" ).on( "click", function() {
-                    $('#textarea-JSON-export').val( JSON.stringify( that.transformIntoArray() ) );
-                    console.log("Exporting: ");
-                    console.log(that.transformIntoArray());
-                });
+                $('#textarea-JSON-export').val( JSON.stringify( this.transformIntoArray() ) );
             }
         }
 
@@ -293,12 +292,20 @@
                 $('#modal-submit').click(function(e) {
 
                     e.preventDefault();
-
+                    
+                    var you = nodeOp.getContent().text();
+                    var yourParent = nodeOp.getParentContent().text();
+                            
                     // If user does not modify the default value when submitting, purge the newly created node.
-                    if (!$(tree.targetNode).text() || $(tree.targetNode).text() == this.newNodeDefaultValue) {
+                    if (!you || you == this.newNodeDefaultValue) {
+//                        if (!$(tree.targetNode).text() || $(tree.targetNode).text() == this.newNodeDefaultValue) {
                         nodeOp.remove($(tree.targetNode).closest('li'));
-                    } else {
-                        dataOp.export.add(nodeOp.getContent(), nodeOp.getParentContent())
+                    // The name newly created node already exists!!!
+                    } else if( tree.map[you] ){
+                        UI.exportWarnAgainstDuplicateName(you);
+                    }
+                    else{
+                        dataOp.export.add(you,yourParent )
                     }
 
                 });
@@ -398,23 +405,28 @@
                 if( ! $.isEmptyObject(tree.map) ){
                     $("#modal-export-prompt").modal('show');
                 }
-
-                var importModal = $('#modal-JSON-import');
-                importModal.modal('show');  
-                importModal.find('.alert').hide();
-                importModal.find('#form-load-custom').hide();
-                importModal.find('#load-default').show();
-                importModal.find('#load-custom').show(); 
+                else{
+                    var importModal = $('#modal-JSON-import');
+                    importModal.modal('show');  
+                    importModal.find('.alert').hide();
+                    importModal.find('#form-load-custom').hide();
+                    importModal.find('#load-default').show();
+                    importModal.find('#load-custom').show(); 
+                }
             });
 
                     
         },
-
+        
         importWarning: function () {
             $("#modal-export-prompt .btn-danger").click(function (e) {
                 e.preventDefault();
                 // Clean our map
-                map = {}; 
+                tree.map = {}; 
+                $('#modal-export-prompt').on('hidden.bs.modal', function (e) {
+                  $('#import').trigger('click');
+                });
+                
             });
 
             $("#modal-export-prompt .btn-success").click(function (e) {
@@ -461,8 +473,12 @@
              */
             $('#export').on('click', function() {
                 dataOp.export.prepareJSON();
-                $('modal-JSON-export').modal('show');
+                $('#modal-JSON-export').modal('show');
             });
+        },
+        
+        exportWarnAgainstDuplicateName: function (nodeName) {
+            
         }
     };
 
