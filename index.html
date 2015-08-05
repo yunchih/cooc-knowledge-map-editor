@@ -10,6 +10,9 @@
     </head>
     <body>
 
+        <!--                                  -->
+        <!--    Mundane UI: Context menu      -->
+        <!--                                  -->
         <div id="context-menu">
           <ul class="dropdown-menu" role="menu">
             <li><a tabindex="-1" id="modify">修改</a></li>
@@ -19,8 +22,38 @@
              <li><a tabindex="-1" id="delete">刪除節點</a></li>
           </ul>
         </div>
-
-        <div id="modal" class="modal fade">
+        
+        <!--                                  -->
+        <!-- Mundane UI: Node editing modal   -->
+        <!--                                  -->
+        <div id="modal-edit-node" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 id="modal-title"></h4>
+              </div>
+              <div class="modal-body">
+                <form class="contact" name="contact">
+                    <input class="form-control input-lg" type="text" id="modal-input" class="input-lg">
+                </form>
+                <div class="alert alert-danger" role="alert" id="duplicate-node">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <span class="sr-only">Ops:</span>
+                  <span id="alert-body"></span>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal-submit">確定</button>
+                <button type="button" class="btn btn-default" id="modal-cancel" data-dismiss="modal">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--                                                      -->
+        <!-- Mundane UI: Warn user against duplicate node names   -->
+        <!--                                                      -->
+        <div id="modal-edit-node" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -36,10 +69,13 @@
                 <button type="button" class="btn btn-primary" id="modal-submit" data-dismiss="modal">確定</button>
                 <button type="button" class="btn btn-default" id="modal-cancel" data-dismiss="modal">取消</button>
               </div>
-            </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+            </div>
+          </div>
+        </div>
 
+        <!--                                  -->
+        <!-- Optional UI: Top navigation bar  -->
+        <!--                                  -->
         <nav class="navbar navbar-inverse">
           <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -60,13 +96,18 @@
             </div><!-- /.navbar-collapse -->
           </div><!-- /.container-fluid -->
         </nav>
-
+        
+        <!--                                  -->
+        <!--      Main body of the editor     -->
+        <!--                                  -->
         <section class="container">
 			       <h1 style="text-align:center">編輯請按右鍵</h1>
             <div class="tree"></div>
         </section>
           
-
+        <!--                                  -->
+        <!--  Optional UI: JSON export modal  -->
+        <!--                                  -->
         <div id="modal-JSON-export" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -82,10 +123,14 @@
               <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-dismiss="modal">完成</button>
               </div>
-            </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
+            </div>
+          </div>
+        </div>
+        
+        <!--                                         -->
+        <!--    Optional UI: Initial prompt modal    -->
+        <!-- (shown when user first enters the site) -->
+        <!--                                         -->
         <div id="modal-JSON-import" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -101,18 +146,23 @@
                   <button type="submit" class="btn btn-success btn-lg btn-block" placeholder="URL....">匯入</button>
                 </form>
 
-                <div class="alert alert-danger" role="alert">
+                <div class="alert alert-danger" role="alert" id="file-not-found">
                   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                   <span class="sr-only">Ops:</span>
                   找不到此檔案
                 </div>
 
               </div>
-            </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+            </div>
+          </div>
+        </div>
 
-<!--  export warning  -->
+        <!--                                         -->
+        <!--    Optional UI: Export warning modal    -->
+        <!--  ask user if he wanna save the current  -->
+        <!--  knowledge map before importing a       -->
+        <!--  new one                                -->
+        <!--                                         -->
         <div id="modal-export-prompt" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -123,9 +173,9 @@
                 <button type="button" class="btn btn-success btn-lg btn-block" data-dismiss="modal">是</button>
                 <button type="button" class="btn btn-danger btn-lg btn-block" data-dismiss="modal">否</button>
               </div>
-            </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
+            </div>
+          </div>
+        </div>
 
         <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>

@@ -67,6 +67,16 @@
 .tree i {
     margin-right: 7px;
 }
+
+.duplicate-node-name {
+     color: #F00000; 
+     font-weight: bold;
+     text-decoration: underline dotted;
+}
+
+#duplicate-node {
+    display: none;
+}
 /*
 // Color Pallete
 // http://www.colorcombos.com/color-schemes/211/ColorCombo211.html

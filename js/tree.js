@@ -118,8 +118,8 @@
                     $('#modal-JSON-import').modal('hide');
 
                 }).fail(function() {
-                    $(".alert").show('fast',function(){
-                        $(this).addClass('shake');
+                    $("#file-not-found").show('fast',function(){
+                        UI.triggerShakeAnimation($(this));
                     });
                 });
             }
@@ -223,6 +223,8 @@
                 tree.targetNode = this;
             });
 
+            // Bind the modal object into a local variable, 
+            // so it can be seen inside contextmenu callback function
             var $modal = this.modal;
 
             $('.node').contextmenu({
@@ -264,7 +266,7 @@
                         }
 
                         // Show modal so that user can edit a node
-                        $('#modal').modal('show');
+                        $('#modal-edit-node').modal('show');
                     }
 
                 }
@@ -274,11 +276,21 @@
         modal: {
 
             build: function(title, defaultValue) {
-                $('#modal-title').html(title);
+                
+
+                // If a title is given, change it
+                if( title )
+                    $('#modal-title').html(title);
+
                 $('#modal-input')
                     .val(defaultValue)
                     .on('click', function() {
+
                         $(this).select();
+
+                        // Hide the duplicate warning ( if any )
+                        $('#duplicate-node').hide('fast');
+
                     });
             },
 
@@ -305,7 +317,8 @@
                         UI.exportWarnAgainstDuplicateName(you);
                     }
                     else{
-                        dataOp.export.add(you,yourParent )
+                        dataOp.export.add( you,yourParent );
+                        $('#modal-edit-node').modal('hide');
                     }
 
                 });
@@ -478,8 +491,33 @@
         },
         
         exportWarnAgainstDuplicateName: function (nodeName) {
+            var warning = $('<span></span>')
+                            .text(nodeName)
+                            .addClass('duplicate-node-name')
+                            
+            var animate = this.triggerShakeAnimation;                
+            $('#duplicate-node > #alert-body')
+                .html( warning )
+                .prepend('已經有節點叫做 ')
+                .append('! 請換一個名字吧~')
+                .parent()
+                .show('fast',function(){
+
+                    animate($(this));
+
+                    // Rebuild a modal
+                    // plugini.modal.build('',nodeName);
+                });
+        },
+
+        triggerShakeAnimation: function ($target) {
             
-        }
+            $target.addClass('shake');
+            setTimeout( function() {
+                $target.removeClass('shake');
+            }, 750 );
+
+        }     
     };
 
     // Executed on document ready
