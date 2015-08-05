@@ -67,7 +67,12 @@
 .tree i {
     margin-right: 7px;
 }
-
+.tree .target-node {
+    border-style: ;
+    border-style: double;
+    border-color: #C83809;
+    border-width: 3px;
+}
 .duplicate-node-name {
      color: #F00000; 
      font-weight: bold;
@@ -77,6 +82,29 @@
 #duplicate-node {
     display: none;
 }
+
+#hotkeys {
+  background: hsla(1,0%,100%,.9);
+  position: absolute;
+  top: 50px;
+  /*left: 50%;*/
+  left:0;
+  right:0;
+  min-height: 100%;
+  padding-top: 80px;
+  display: none;
+  list-style-type:none;
+}
+
+#hotkeys section {
+    width: 30%;
+    margin: 100px auto;
+}
+#hotkeys ul , #hotkeys button, #hotkeys li{
+    margin: 0 auto;
+}
+
+
 /*
 // Color Pallete
 // http://www.colorcombos.com/color-schemes/211/ColorCombo211.html

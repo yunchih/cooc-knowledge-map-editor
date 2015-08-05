@@ -9,17 +9,17 @@
         <link rel="stylesheet" href="css/layout.css">
     </head>
     <body>
-
+ 
         <!--                                  -->
         <!--    Mundane UI: Context menu      -->
         <!--                                  -->
         <div id="context-menu">
           <ul class="dropdown-menu" role="menu">
-            <li><a tabindex="-1" id="modify">修改</a></li>
+            <li><a tabindex="-1" id="modify-node">修改</a></li>
              <li class="divider"></li>
-             <li><a tabindex="-1" id="add">新增子節點</a></li>
+             <li><a tabindex="-1" id="add-node">新增子節點</a></li>
              <li class="divider"></li>
-             <li><a tabindex="-1" id="delete">刪除節點</a></li>
+             <li><a tabindex="-1" id="delete-node">刪除節點</a></li>
           </ul>
         </div>
         
@@ -87,10 +87,13 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
               <ul class="nav navbar-nav navbar-right">
                 <li>
-                  <button type="button" class="btn btn-primary nav-button" id="import" data-toggle="modal" id="button-import">匯入 JSON</button>
+                  <button type="button" class="btn btn-primary nav-button" id="show-hotkey">快捷鍵</button>
                 </li>
                 <li>
-                  <button type="button" class="btn btn-primary nav-button" id="export" data-toggle="modal" id="button-import">輸出 JSON</button>
+                  <button type="button" class="btn btn-primary nav-button" id="import" data-toggle="modal" >匯入 JSON</button>
+                </li>
+                <li>
+                  <button type="button" class="btn btn-primary nav-button" id="export" data-toggle="modal" >輸出 JSON</button>
                 </li>
               </ul>
             </div><!-- /.navbar-collapse -->
@@ -176,12 +179,25 @@
             </div>
           </div>
         </div>
+          <div id="hotkeys">
+            <section >
+              <ul class="list-group">
+                <li class="list-group-item">新增子節點: <kbd>c</kbd></li>
+                <li class="list-group-item">新增鄰節點: <kbd>v</kbd></li>
+                <li class="list-group-item">修改節點: <kbd>Enter</kbd></li>
+                <li class="list-group-item">刪除節點: <kbd>Delete</kbd></li>
+              </ul>    
+              <button type="button" class="btn btn-default btn-lg" id="hide-hotkeys">知道了</button>   
+            </section>
+          </div>
 
+          
         <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
         <script src="js/contextmenu.js" ></script>   
-        <script src="js/tree.js" ></script>   
+        <script src="js/jquery.hotkeys.js" ></script>   
+        <script src="js/knowledge-map-editor.js" ></script>   
         
     </body>
 </html>

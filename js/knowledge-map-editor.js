@@ -9,6 +9,12 @@
             this.node_minus_icon  = "glyphicon-minus";
             this.node_plus_icon   = "glyphicon-plus";
             this.node_leaf_icon   = "glyphicon-leaf";
+            this.hotkey = {
+                addChildNode:   "c",
+                addSiblingNode: "v",
+                modifyNode:     "return",
+                deleteNode:     "del"
+            };
             this.jsonModelDefault = {
                 name: "",
                 parent: "",
@@ -33,6 +39,29 @@
                 icon = this.node_leaf_icon;
             return icon;
         },
+
+        add_child_node: function () {
+            nodeOp.add();
+            plugin.modal.build('新增', '知識節點......');
+            $('#modal-edit-node').modal('show');
+        },
+        add_sibling_node: function () {
+            
+        },
+        modify_node: function () {
+            // Cache the content so that if user hit 'Cancel', we can recover the original content
+            nodeOp.contentCache = $(tree.targetNode).text();
+            plugin.modal.build('修改', $(tree.targetNode).text());
+            $('#modal-edit-node').modal('show');
+        },
+
+        delete_node: function () {
+            // remove the node from tree
+            nodeOp.remove($(tree.targetNode).parent());
+
+            // remove the node from our data ( which will be exported )
+            dataOp.export.remove(nodeOp.getContent().text())
+        }
     };
 
     var dataOp = {
@@ -49,7 +78,7 @@
              */
             buildNode: function _buildNode(node, dept) {
 
-                tree.html += ('<span class="node node-' + dept + '" data-toggle="context"><i class="glyphicon ' + tree.getIcon(node) + '"></i>' + node.name + '</span> ');
+                tree.html += ('<span tabindex="0" class="node node-' + dept + '" data-toggle="context"><i class="glyphicon ' + tree.getIcon(node) + '"></i>' + node.name + '</span> ');
 
                 dept = dept + 1;
                 tree.html += '<ul data-dept=' + dept + ' >';
@@ -114,7 +143,13 @@
 
                     // Before transforming our data, we shall initialize the necessary utililies
                     dataOp.init(data);
+
+                    // Initialize context menu and other plugins.
                     plugin.init();
+
+                    // Start listening for click event on nodes.
+                    nodeOp.clickListener();
+
                     $('#modal-JSON-import').modal('hide');
 
                 }).fail(function() {
@@ -188,7 +223,8 @@
         init: function() {
             this.collapsible();
             this.contextMenu();
-            this.modal.process();
+            this.hotkey();
+            this.modal.processInput();
         },
 
         /*
@@ -241,33 +277,13 @@
 
                     var operation = e.target.id;
 
-                    if (operation == "delete"){
+                    if (operation == "delete-node")
+                        tree.delete_node();
+                    else if (operation == "add-node") 
+                        tree.add_node();
+                    else 
+                        tree.modify_node();
 
-                        // remove the node from tree
-                        nodeOp.remove($(tree.targetNode).parent());
-
-                        // remove the node from our data ( which will be exported )
-                        dataOp.export.remove(nodeOp.getContent().text())
-
-                    }
-                    else {
-
-                        if (operation == "add") {
-
-                            nodeOp.add();
-                            $modal.build('新增', '知識節點......');
-
-                        } else {
-
-                            // Cache the content so that if user hit 'Cancel', we can recover the original content
-                            nodeOp.contentCache = $(tree.targetNode).text();
-                            $modal.build('修改', $(tree.targetNode).text());
-
-                        }
-
-                        // Show modal so that user can edit a node
-                        $('#modal-edit-node').modal('show');
-                    }
 
                 }
             })
@@ -293,8 +309,7 @@
 
                     });
             },
-
-            process: function() {
+            processInput: function() {
                 /* Update the value of new field constantly */
                 $('#modal-input').keyup(function() {
                     var input = $('#modal-input').val();
@@ -341,12 +356,35 @@
                 });
             }
         },
+
+        hotkey: function () {
+
+            console.log(tree.hotkey);
+
+            $('.node').bind('keydown', tree.hotkey.addChildNode, function(event){
+                event.preventDefault();
+                tree.add_child_node();
+                console.log("Key event! Adding new node");
+            });
+            $('.node').bind('keydown', tree.hotkey.addSiblingNode, function(event){
+                event.preventDefault();
+                tree.add_sibling_node();
+            });
+            $('.node').bind('keydown', tree.hotkey.modifyNode, function(event){
+                event.preventDefault();
+                tree.modify_node();
+            });
+            $('.node').bind('keydown', tree.hotkey.deleteNode, function(event){
+                event.preventDefault();
+                tree.delete_node();
+            });
+        }
     };
 
     var nodeOp = {
 
         init: function() {
-            this.newNode = "<li><span class='node' data-toggle='context' >" + tree.newNodeDefaultValue + "</span><ul></ul></li> ";
+            this.newNode = "<li><span tabindex='0' class='node' data-toggle='context' >" + tree.newNodeDefaultValue + "</span><ul></ul></li> ";
             this.contentCache = "";
         },
 
@@ -401,6 +439,15 @@
 
         makeUncollapsible: function($node) {
             $node.has('li').removeClass('collapsible').find(' > span').attr('title', '葉節點');
+        },
+
+        clickListener: function () {
+            $('.node').on('click', function () {
+                $(tree.targetNode).removeClass('target-node');
+                tree.targetNode = this;
+                $(this).addClass('target-node');
+                console.log("clicked");
+            })
         }
     };
 
@@ -414,7 +461,8 @@
 
                 e.preventDefault();
 
-                // If there is unexported data
+                // If there is unexported data, prompt 
+                // user to export them first.
                 if( ! $.isEmptyObject(tree.map) ){
                     $("#modal-export-prompt").modal('show');
                 }
@@ -510,6 +558,15 @@
                 });
         },
 
+        showHotKey: function () {
+            $('#show-hotkey').click(function () {
+                $('#hotkeys').fadeIn('fast');
+            })
+            $('#hide-hotkey').click(function () {
+                $('#hotkeys').fadeOut('fast');
+            })
+        },
+
         triggerShakeAnimation: function ($target) {
             
             $target.addClass('shake');
@@ -519,6 +576,8 @@
 
         }     
     };
+
+
 
     // Executed on document ready
     $(function() {
@@ -535,6 +594,7 @@
         UI.importWarning();
         UI.importCustom();
         UI.importDefault();
+        UI.showHotKey()
         UI.export();
 
         $('#import').trigger('click');
