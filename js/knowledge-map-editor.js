@@ -365,20 +365,20 @@
 
             $('.node').bind('keydown', tree.hotkey.addChildNode, function(event){
                 event.preventDefault();
-                tree.addChildNode();
+                tree.addNode('child');
                 console.log("Key event! Adding new node");
             });
             $('.node').bind('keydown', tree.hotkey.addSiblingNode, function(event){
                 event.preventDefault();
-                tree.addSiblingNode();
+                tree.addNode('sibling');
             });
             $('.node').bind('keydown', tree.hotkey.modifyNode, function(event){
                 event.preventDefault();
-                tree.modify_node();
+                tree.modifyNode();
             });
             $('.node').bind('keydown', tree.hotkey.deleteNode, function(event){
                 event.preventDefault();
-                tree.delete_node();
+                tree.deleteNode();
             });
         }
     };
