@@ -4,11 +4,12 @@
 
         init: function() {
             /* Configurations */
-            this.jsonFilePath     = 'data/tree-data.json';
-            this.root_icon        = "glyphicon-folder-open";
-            this.node_minus_icon  = "glyphicon-minus";
-            this.node_plus_icon   = "glyphicon-plus";
-            this.node_leaf_icon   = "glyphicon-leaf";
+            this.defaultJSONFilePath = 'data/tree-data.json';
+            this.blankJSONFilePath   = 'data/default-new-data.json';
+            this.root_icon           = "glyphicon-folder-open";
+            this.node_minus_icon     = "glyphicon-minus";
+            this.node_plus_icon      = "glyphicon-plus";
+            this.node_leaf_icon      = "glyphicon-leaf";
             this.hotkey = {
                 addChildNode:   "c",
                 addSiblingNode: "v",
@@ -362,8 +363,6 @@
 
         hotkey: function () {
 
-            console.log(tree.hotkey);
-
             $('.node').bind('keydown', tree.hotkey.addChildNode, function(event){
                 event.preventDefault();
                 tree.addChildNode();
@@ -469,7 +468,7 @@
 
     var UI = {
 
-        importDialog: function () {
+        importDialogTrigger: function () {
              /*
               * Show initial import prompt 
               */
@@ -513,35 +512,37 @@
         },
         
         importDialogChooseCustom: function () {
-             /*
-              * Show input field when user choose to import custom JSON
-              */
-            $( "#load-custom" ).on( "click", function() {
-                $("#form-load-custom").show('fast');
-                $("#load-default").hide('fast');
-                $(this).hide('fast');
-            });            
-        },
-
-        importCustom: function () {
             /*
              * Read custom JSON URL and import it
              */
             $( "#form-load-custom > .btn" ).on( "click" , function(e) {
                 e.preventDefault();
-                console.log("Loading custom JSON");
                 dataOp.import.loadJSON($("#form-load-custom > input").val());
             });
         },
 
-        importDefault: function () {
+        importDialogForm: function () {
+            /*
+             * Load default JSON file
+             */
+            $( "#load-blank" ).on( "click", function() {
+                dataOp.import.loadJSON(tree.blankJSONFilePath);
+            });
+             /*
+              * Show input field when user choose to import custom JSON
+              */
+            $( "#load-custom" ).on( "click", function() {
+                $("#form-load-custom").show('fast');
+                $("#hide-if-load-custom").hide('fast');
+                $(this).hide('fast');
+            });             
             /*
              * Load default JSON file
              */
             $( "#load-default" ).on( "click", function() {
-                console.log("Loading default JSON");
-                dataOp.import.loadJSON(tree.jsonFilePath);
+                dataOp.import.loadJSON(tree.defaultJSONFilePath);
             });
+
         },
 
         export: function () {
@@ -605,11 +606,10 @@
         nodeOp.init();
 
         /* ----------  UI  ---------- */
-        UI.importDialog();
+        UI.importDialogTrigger();
+        UI.importDialogForm();
         UI.importDialogChooseCustom();
         UI.importWarning();
-        UI.importCustom();
-        UI.importDefault();
         UI.showHotKey()
         UI.export();
 

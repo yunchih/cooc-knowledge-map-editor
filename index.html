@@ -92,7 +92,7 @@
                   <button type="button" class="btn btn-primary nav-button" id="show-hotkey">快捷鍵</button>
                 </li>
                 <li>
-                  <button type="button" class="btn btn-primary nav-button" id="import" data-toggle="modal" >匯入 JSON</button>
+                  <button type="button" class="btn btn-primary nav-button" id="import" data-toggle="modal" >新增知識地圖</button>
                 </li>
                 <li>
                   <button type="button" class="btn btn-primary nav-button" id="export" data-toggle="modal" >輸出 JSON</button>
@@ -143,9 +143,11 @@
                 <h1 id="welcome">歡迎使用知識地圖編輯器</h1>
               </div>
               <div class="modal-body">
-                <button type="button" class="btn btn-primary btn-lg btn-block" id="load-default" >載入範例 JSON</button>
-                <button type="button" class="btn btn-default btn-lg btn-block" id="load-custom">自己匯入</button>
-
+                <div id="hide-if-load-custom">
+                  <button type="button" class="btn btn-primary btn-lg btn-block" id="load-blank" >新增</button>
+                  <button type="button" class="btn btn-default btn-lg btn-block" id="load-default" >載入範例 JSON</button>
+                </div>
+                <button type="button" class="btn btn-default btn-lg btn-block" id="load-custom">匯入其他 JSON</button>
                 <form class="form" id="form-load-custom">
                   <input type="text" class="form-control input-lg" placeholder="檔案 URL" >
                   <button type="submit" class="btn btn-success btn-lg btn-block" placeholder="URL....">匯入</button>
