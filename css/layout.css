@@ -15,3 +15,7 @@
 #welcome {
 	text-align: center;
 }
+
+#modal-JSON-import .btn{
+	margin: 15px auto;
+}
