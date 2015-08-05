@@ -210,7 +210,11 @@
              * Export the JSON and throw it into the export textarea
              */
             prepareJSON: function () {
-                $('#textarea-JSON-export').val( JSON.stringify( this.transformIntoArray() ) );
+                $('#textarea-JSON-export')
+                    .val( JSON.stringify( this.transformIntoArray() ) )
+                    .focus(function () {
+                        this.select();
+                    });
             }
         }
 
