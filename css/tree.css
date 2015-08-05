@@ -100,8 +100,11 @@
     width: 30%;
     margin: 100px auto;
 }
-#hotkeys ul , #hotkeys button, #hotkeys li{
-    margin: 0 auto;
+#hotkeys li {
+    list-style-type:none;
+    width: 50%;
+    margin: 30px auto;
+    font-size: 22px;
 }
 
 
