@@ -40,22 +40,20 @@
             return icon;
         },
 
-        add_child_node: function () {
-            nodeOp.add();
+        addNode: function (childNodeType) {
+            nodeOp.add(childNodeType);
             plugin.modal.build('新增', '知識節點......');
             $('#modal-edit-node').modal('show');
         },
-        add_sibling_node: function () {
-            
-        },
-        modify_node: function () {
+
+        modifyNode: function () {
             // Cache the content so that if user hit 'Cancel', we can recover the original content
             nodeOp.contentCache = $(tree.targetNode).text();
             plugin.modal.build('修改', $(tree.targetNode).text());
             $('#modal-edit-node').modal('show');
         },
 
-        delete_node: function () {
+        deleteNode: function () {
             // remove the node from tree
             nodeOp.remove($(tree.targetNode).parent());
 
@@ -277,14 +275,19 @@
 
                     var operation = e.target.id;
 
-                    if (operation == "delete-node")
-                        tree.delete_node();
-                    else if (operation == "add-node") 
-                        tree.add_node();
-                    else 
-                        tree.modify_node();
-
-
+                    switch(operation) {
+                        case "delete-node":
+                            tree.deleteNode();
+                            break;
+                        case "add-child-node":
+                            tree.addNode('child');
+                            break;
+                        case "add-sibling-node":
+                            tree.addNode('sibling');
+                            break;
+                        default:
+                            tree.modifyNode();
+                    }
                 }
             })
         },
@@ -363,12 +366,12 @@
 
             $('.node').bind('keydown', tree.hotkey.addChildNode, function(event){
                 event.preventDefault();
-                tree.add_child_node();
+                tree.addChildNode();
                 console.log("Key event! Adding new node");
             });
             $('.node').bind('keydown', tree.hotkey.addSiblingNode, function(event){
                 event.preventDefault();
-                tree.add_sibling_node();
+                tree.addSiblingNode();
             });
             $('.node').bind('keydown', tree.hotkey.modifyNode, function(event){
                 event.preventDefault();
@@ -388,28 +391,41 @@
             this.contentCache = "";
         },
 
-        add: function() {
-
-            // If parent was a leaf, turn it into a normal node
-            this.removeLeafIcon();
-
-            // Make the parent collapsible
-            this.makeCollapsible($(tree.targetNode).parent('li'));
-
-            // Get current dept
+        // targetType could be "child" or "sibling", all relative to the current selected node.
+        add: function(targetType) {
+             // Get current dept
             var dept = $(tree.targetNode).siblings('ul').attr('data-dept');
 
-            // Append to ul sibling to the target span
-            tree.targetNode = $(this.newNode).appendTo($(tree.targetNode).siblings('ul'));
+            // Adding a child node
+            if( targetType == "child" ){
+                // If parent was a leaf, turn it into a normal node
+                this.removeLeafIcon();
+
+                // Make the parent collapsible
+                this.makeCollapsible($(tree.targetNode).parent('li'));
+
+                // Append to ul sibling to the target span
+                tree.targetNode = $(this.newNode).appendTo($(tree.targetNode).siblings('ul'));
+            }   
+            // Adding a sibling node
+            else{
+
+                // Append to ul sibling to the target span
+                tree.targetNode = $(this.newNode).appendTo($(tree.targetNode).closest('ul'));
+
+            }
 
             // Set next dept
             $(tree.targetNode).children('ul').attr('data-dept', parseInt(dept) + 1);
 
             // Add icon
-            tree.targetNode = tree.targetNode.children('.node')
+            tree.targetNode = 
+            tree.targetNode
+                .children('.node')
                 .addClass('node-' + dept)
                 .prepend('<i class="glyphicon ' + tree.getIcon({}) + '"></i>'); // Prepend leaf glyph
 
+            // Restart context menu
             plugin.contextMenu();
         },
 
