@@ -14,7 +14,11 @@
                 addChildNode:   "c",
                 addSiblingNode: "v",
                 modifyNode:     "e",
-                deleteNode:     "del"
+                deleteNode:     "del",
+                goParentNode:   "left",
+                goChildNode:    "right",
+                goLastSibling:  "up",
+                goNextSibling:  "down"
             };
             this.jsonModelDefault = {
                 name: "",
@@ -60,6 +64,21 @@
 
             // remove the node from our data ( which will be exported )
             dataOp.export.remove(nodeOp.getContent().text())
+        },
+
+        goParentNode: function () {
+            nodeOp.changeFocusingNode( $(tree.targetNode).closest('ul').siblings('.node') );
+        },
+        goChildNode: function () {
+            var oldTargetNode = tree.targetNode;
+            nodeOp.changeFocusingNode( $(tree.targetNode).siblings('ul').find('.node:first') );
+            plugin.toggleCollapsible(oldTargetNode);
+        },
+        goLastSibling: function () {
+            nodeOp.changeFocusingNode( $(tree.targetNode).closest('li').prev().children('.node') );
+        },
+        goNextSibling: function () {
+            nodeOp.changeFocusingNode( $(tree.targetNode).closest('li').next().children('.node') );
         }
     };
 
@@ -232,10 +251,11 @@
     var plugin = {
 
         init: function() {
-            this.collapsible();
             this.contextMenu();
             this.hotkey();
             this.modal.processInput();
+            this.collapsible();
+
         },
 
         /*
@@ -245,17 +265,25 @@
         collapsible: function() {
 
             nodeOp.makeCollapsible($('.tree li').has('li'));
+
+            var toggle = this.toggleCollapsible;
             $('.tree').on('click', ' li.collapsible > span', function(e) {
-                var children = $(this).parent('li.collapsible').find(' > ul > li');
-                if (children.is(":visible")) {
-                    children.hide('fast');
-                    $(this).attr('title', '開啟').find(' > i').addClass(tree.node_plus_icon).removeClass(tree.node_minus_icon);
-                } else {
-                    children.show('fast');
-                    $(this).attr('title', '關閉').find(' > i').addClass(tree.node_minus_icon).removeClass(tree.node_plus_icon);
-                }
+                console.log("clicked");
+                toggle(this,"clicked");
                 e.stopPropagation();
             });
+        },
+
+        toggleCollapsible: function (targetNode ,isClicked) {
+            var children = $(targetNode).parent('li.collapsible').find(' > ul > li');
+            console.log("Toggle");
+            if ( children.is(":visible") && isClicked ) {
+                children.hide('fast');
+                $(targetNode).attr('title', '開啟').find(' > i').addClass(tree.node_plus_icon).removeClass(tree.node_minus_icon);
+            } else {
+                children.show('fast');
+                $(targetNode).attr('title', '關閉').find(' > i').addClass(tree.node_minus_icon).removeClass(tree.node_plus_icon);
+            }
         },
 
         /*
@@ -333,8 +361,6 @@
                 });
 
                 $('#modal-edit-node form').submit(function () {
-                    console.log("Submitting");
-
                     var you = nodeOp.getContent().text();
                     var yourParent = nodeOp.getParentContent().text();
                             
@@ -382,19 +408,27 @@
             $('.node').bind('keydown', tree.hotkey.addChildNode, function(event){
                 event.preventDefault();
                 tree.addNode('child');
-                console.log("Key event! Adding new node");
-            });
-            $('.node').bind('keydown', tree.hotkey.addSiblingNode, function(event){
+            }).bind('keydown', tree.hotkey.addSiblingNode, function(event){
                 event.preventDefault();
                 tree.addNode('sibling');
-            });
-            $('.node').bind('keydown', tree.hotkey.modifyNode, function(event){
+            }).bind('keydown', tree.hotkey.modifyNode, function(event){
                 event.preventDefault();
                 tree.modifyNode();
-            });
-            $('.node').bind('keydown', tree.hotkey.deleteNode, function(event){
+            }).bind('keydown', tree.hotkey.deleteNode, function(event){
                 event.preventDefault();
                 tree.deleteNode();
+            }).bind('keydown', tree.hotkey.goParentNode, function(event){
+                event.preventDefault();
+                tree.goParentNode();
+            }).bind('keydown', tree.hotkey.goChildNode, function(event){
+                event.preventDefault();
+                tree.goChildNode();
+            }).bind('keydown', tree.hotkey.goNextSibling, function(event){
+                event.preventDefault();
+                tree.goNextSibling();
+            }).bind('keydown', tree.hotkey.goLastSibling, function(event){
+                event.preventDefault();
+                tree.goLastSibling();
             });
         }
     };
@@ -402,7 +436,7 @@
     var nodeOp = {
 
         init: function() {
-            this.newNode = "<li><span tabindex='0' class='node' data-toggle='context' >" + tree.newNodeDefaultValue + "</span><ul></ul></li> ";
+            this.newNodeTemplate = "<li><span tabindex='0' class='node' data-toggle='context' >" + tree.newNodeDefaultValue + "</span><ul></ul></li> ";
             this.contentCache = "";
         },
 
@@ -410,6 +444,7 @@
         add: function(targetType) {
              // Get current dept
             var dept = $(tree.targetNode).siblings('ul').attr('data-dept');
+            var newParentNode;
 
             // Adding a child node
             if( targetType == "child" ){
@@ -419,24 +454,21 @@
                 // Make the parent collapsible
                 this.makeCollapsible($(tree.targetNode).parent('li'));
 
-                // Append to ul sibling to the target span
-                tree.targetNode = $(this.newNode).appendTo($(tree.targetNode).siblings('ul'));
+                newParentNode = $(tree.targetNode).siblings('ul')
             }   
             // Adding a sibling node
             else{
-
-                // Append to ul sibling to the target span
-                tree.targetNode = $(this.newNode).appendTo($(tree.targetNode).closest('ul'));
-
+                newParentNode = $(tree.targetNode).closest('ul');
             }
 
+            // Append to target ul and change the focus
+            this.changeFocusingNode( $(this.newNodeTemplate).appendTo(newParentNode).children('.node') );
+
             // Set next dept
-            $(tree.targetNode).children('ul').attr('data-dept', parseInt(dept) + 1);
+            $(tree.targetNode).siblings('ul').attr('data-dept', parseInt(dept) + 1);
 
             // Add icon
-            tree.targetNode = 
             tree.targetNode
-                .children('.node')
                 .addClass('node-' + dept)
                 .prepend('<i class="glyphicon ' + tree.getIcon({}) + '"></i>'); // Prepend leaf glyph
 
@@ -473,11 +505,18 @@
         },
 
         clickListener: function () {
+            var changeFocus = this.changeFocusingNode;
             $('.node').on('click', function () {
-                $(tree.targetNode).removeClass('target-node');
-                tree.targetNode = this;
-                $(this).addClass('target-node');
+                changeFocus(this);
             })
+        },
+
+        changeFocusingNode: function (focusingNode) {
+            if( $(focusingNode).length ){
+                $(tree.targetNode).removeClass('target-node');
+                tree.targetNode = focusingNode;
+                $(focusingNode).addClass('target-node');
+            }
         }
     };
 
@@ -525,7 +564,7 @@
                 e.preventDefault();
 
                 $('#export').trigger('click');
-                
+
                 // Clean our map when export is done 
                 setTimeout(dataOp.cleanUp,1);
             })
