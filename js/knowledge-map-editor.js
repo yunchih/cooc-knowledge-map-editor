@@ -70,9 +70,8 @@
             nodeOp.changeFocusingNode( $(tree.targetNode).closest('ul').siblings('.node') );
         },
         goChildNode: function () {
-            var oldTargetNode = tree.targetNode;
+            plugin.toggleCollapsible(tree.targetNode);
             nodeOp.changeFocusingNode( $(tree.targetNode).siblings('ul').find('.node:first') );
-            plugin.toggleCollapsible(oldTargetNode);
         },
         goLastSibling: function () {
             nodeOp.changeFocusingNode( $(tree.targetNode).closest('li').prev().children('.node') );
@@ -352,6 +351,11 @@
                         $('#duplicate-node').hide('fast');
 
                     });
+
+                $('#modal-edit-node').on('show.bs.modal', function (e) {
+                    $('#duplicate-node').hide();
+                });
+
             },
             processInput: function() {
                 /* Update the value of new field constantly */
