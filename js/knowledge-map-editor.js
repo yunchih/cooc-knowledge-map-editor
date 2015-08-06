@@ -13,7 +13,7 @@
             this.hotkey = {
                 addChildNode:   "c",
                 addSiblingNode: "v",
-                modifyNode:     "return",
+                modifyNode:     "e",
                 deleteNode:     "del"
             };
             this.jsonModelDefault = {
@@ -66,6 +66,7 @@
     var dataOp = {
 
         init: function(data) {
+            tree.html = "";
             var rootNode = this.import.buildTree(data);
             this.import.buildHTML(rootNode);
         },
@@ -216,6 +217,13 @@
                         this.select();
                     });
             }
+        },
+
+        cleanUp: function () {
+            tree.map = {}; 
+
+            // Clean the HTML
+            $(".tree").html("");
         }
 
     };
@@ -324,16 +332,15 @@
                     nodeOp.getContent().replaceWith(input);
                 });
 
-                $('#modal-submit').click(function(e) {
+                $('#modal-edit-node form').submit(function () {
+                    console.log("Submitting");
 
-                    e.preventDefault();
-                    
                     var you = nodeOp.getContent().text();
                     var yourParent = nodeOp.getParentContent().text();
                             
                     // If user does not modify the default value when submitting, purge the newly created node.
                     if (!you || you == this.newNodeDefaultValue) {
-//                        if (!$(tree.targetNode).text() || $(tree.targetNode).text() == this.newNodeDefaultValue) {
+                    //      if (!$(tree.targetNode).text() || $(tree.targetNode).text() == this.newNodeDefaultValue) {
                         nodeOp.remove($(tree.targetNode).closest('li'));
                     // The name newly created node already exists!!!
                     } else if( tree.map[you] ){
@@ -344,6 +351,11 @@
                         $('#modal-edit-node').modal('hide');
                     }
 
+                    return false;
+                });
+                $('#modal-submit').click(function(e) {
+                    e.preventDefault();
+                    $('#modal-edit-node form').submit();
                 });
 
                 $('#modal-cancel').click(function(e) {
@@ -465,7 +477,6 @@
                 $(tree.targetNode).removeClass('target-node');
                 tree.targetNode = this;
                 $(this).addClass('target-node');
-                console.log("clicked");
             })
         }
     };
@@ -490,8 +501,7 @@
                     importModal.modal('show');  
                     importModal.find('.alert').hide();
                     importModal.find('#form-load-custom').hide();
-                    importModal.find('#load-default').show();
-                    importModal.find('#load-custom').show(); 
+                    importModal.find('#hide-if-load-custom').show(); 
                 }
             });
 
@@ -501,8 +511,10 @@
         importWarning: function () {
             $("#modal-export-prompt .btn-danger").click(function (e) {
                 e.preventDefault();
-                // Clean our map
-                tree.map = {}; 
+
+                // Clean our map immediately ( the user choose not to preserve it. )
+                dataOp.cleanUp();
+
                 $('#modal-export-prompt').on('hidden.bs.modal', function (e) {
                   $('#import').trigger('click');
                 });
@@ -511,7 +523,11 @@
 
             $("#modal-export-prompt .btn-success").click(function (e) {
                 e.preventDefault();
+
                 $('#export').trigger('click');
+                
+                // Clean our map when export is done 
+                setTimeout(dataOp.cleanUp,1);
             })
         },
         

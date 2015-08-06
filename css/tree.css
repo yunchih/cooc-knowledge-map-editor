@@ -87,14 +87,14 @@
 #hotkeys {
   background: hsla(1,0%,100%,.9);
   position: absolute;
-  top: 50px;
-  /*left: 50%;*/
+  top: 0;
   left:0;
   right:0;
   min-height: 100%;
-  padding-top: 80px;
   display: none;
   list-style-type:none;
+  padding-top: 27px;
+    
 }
 
 #hotkeys section {

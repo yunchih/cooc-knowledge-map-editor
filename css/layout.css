@@ -19,3 +19,30 @@
 #modal-JSON-import .btn{
 	margin: 15px auto;
 }
+
+#modal-export-prompt {
+	text-align: center;
+	margin: 0 auto;
+}
+#modal-export-prompt button {
+	font-size: 16px;
+}
+/*#modal-export-prompt {
+	border: 2px solid black;
+}
+#modal-export-prompt button {
+	width: 50%;
+	float: left;
+}
+#modal-export-prompt .btn-group {
+	display: block;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+#modal-export-prompt .modal-body {
+	padding: 0;
+}
+*/
+/*	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+*/
