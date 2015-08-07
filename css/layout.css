@@ -27,22 +27,17 @@
 #modal-export-prompt button {
 	font-size: 16px;
 }
-/*#modal-export-prompt {
-	border: 2px solid black;
+#knowledge-map > .close {
+	position: absolute;
+	top: 80px;
+	right: 100px;
 }
-#modal-export-prompt button {
-	width: 50%;
-	float: left;
+#editor-navbar {
+	z-index: 2;
 }
-#modal-export-prompt .btn-group {
-	display: block;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
+#knowledge-map {
+	z-index: 1;
 }
-#modal-export-prompt .modal-body {
-	padding: 0;
+#hide-preview {
+	display:none;
 }
-*/
-/*	border-top-left-radius: 0;
-	border-bottom-left-radius: 0;
-*/

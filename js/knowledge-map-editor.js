@@ -32,6 +32,7 @@
             this.newNodeDefaultValue = '新增節點';
             this.map = {};
             this.targetNode = null;
+            this.rootNode = null;
             this.html = "";
         },
 
@@ -67,17 +68,17 @@
         },
 
         goParentNode: function () {
-            nodeOp.changeFocusingNode( $(tree.targetNode).closest('ul').siblings('.node') );
+            nodeOp.changeFocusingNode( $(tree.targetNode).closest('ul').siblings('.editor-node') );
         },
         goChildNode: function () {
             plugin.toggleCollapsible(tree.targetNode);
-            nodeOp.changeFocusingNode( $(tree.targetNode).siblings('ul').find('.node:first') );
+            nodeOp.changeFocusingNode( $(tree.targetNode).siblings('ul').find('.editor-node:first') );
         },
         goLastSibling: function () {
-            nodeOp.changeFocusingNode( $(tree.targetNode).closest('li').prev().children('.node') );
+            nodeOp.changeFocusingNode( $(tree.targetNode).closest('li').prev().children('.editor-node') );
         },
         goNextSibling: function () {
-            nodeOp.changeFocusingNode( $(tree.targetNode).closest('li').next().children('.node') );
+            nodeOp.changeFocusingNode( $(tree.targetNode).closest('li').next().children('.editor-node') );
         }
     };
 
@@ -85,8 +86,8 @@
 
         init: function(data) {
             tree.html = "";
-            var rootNode = this.import.buildTree(data);
-            this.import.buildHTML(rootNode);
+            tree.rootNode = this.import.buildTree(data);
+            this.import.buildHTML(tree.rootNode);
         },
 
         import: {
@@ -96,7 +97,7 @@
              */
             buildNode: function _buildNode(node, dept) {
 
-                tree.html += ('<span tabindex="0" class="node node-' + dept + '" data-toggle="context"><i class="glyphicon ' + tree.getIcon(node) + '"></i>' + node.name + '</span> ');
+                tree.html += ('<span tabindex="0" class="editor-node node-' + dept + '" data-toggle="context"><i class="glyphicon ' + tree.getIcon(node) + '"></i>' + node.name + '</span> ');
 
                 dept = dept + 1;
                 tree.html += '<ul data-dept=' + dept + ' >';
@@ -292,7 +293,7 @@
 
             // When user activate the contextmenu, we update the targetNode here
             // Most of the operations apply changes to targetNode
-            $('.node').on('contextmenu', function() {
+            $('.editor-node').on('contextmenu', function() {
                 /* Update targetNode ( the one on which user is right clicking ) */
                 tree.targetNode = this;
             });
@@ -301,7 +302,7 @@
             // so it can be seen inside contextmenu callback function
             var $modal = this.modal;
 
-            $('.node').contextmenu({
+            $('.editor-node').contextmenu({
 
                 parent: this,
 
@@ -409,7 +410,7 @@
 
         hotkey: function () {
 
-            $('.node').bind('keydown', tree.hotkey.addChildNode, function(event){
+            $('.editor-node').bind('keydown', tree.hotkey.addChildNode, function(event){
                 event.preventDefault();
                 tree.addNode('child');
             }).bind('keydown', tree.hotkey.addSiblingNode, function(event){
@@ -440,7 +441,7 @@
     var nodeOp = {
 
         init: function() {
-            this.newNodeTemplate = "<li><span tabindex='0' class='node' data-toggle='context' >" + tree.newNodeDefaultValue + "</span><ul></ul></li> ";
+            this.newNodeTemplate = "<li><span tabindex='0' class='editor-node' data-toggle='context' >" + tree.newNodeDefaultValue + "</span><ul></ul></li> ";
             this.contentCache = "";
         },
 
@@ -466,7 +467,7 @@
             }
 
             // Append to target ul and change the focus
-            this.changeFocusingNode( $(this.newNodeTemplate).appendTo(newParentNode).children('.node') );
+            this.changeFocusingNode( $(this.newNodeTemplate).appendTo(newParentNode).children('.editor-node') );
 
             // Set next dept
             $(tree.targetNode).siblings('ul').attr('data-dept', parseInt(dept) + 1);
@@ -493,7 +494,7 @@
         },
 
         getParentContent: function() {
-            return $(tree.targetNode).closest('ul').siblings('.node').contents().last();
+            return $(tree.targetNode).closest('ul').siblings('.editor-node').contents().last();
         },
 
         removeLeafIcon: function() {
@@ -510,7 +511,7 @@
 
         clickListener: function () {
             var changeFocus = this.changeFocusingNode;
-            $('.node').on('click', function () {
+            $('.editor-node').on('click', function () {
                 changeFocus(this);
             })
         },
@@ -641,9 +642,24 @@
         showHotKey: function () {
             $('#show-hotkey').click(function () {
                 $('#hotkeys').fadeIn('fast');
-            })
+            });
             $('#hide-hotkey').click(function () {
                 $('#hotkeys').fadeOut('fast');
+            });
+        },
+
+        showPreview: function () {
+
+            $('#show-preview').click(function () {
+                createPreview( dataOp.export.transformIntoArray() );
+                $('#knowledge-map').fadeIn('fast');
+                $('#hide-preview').fadeIn('fast');
+                $(this).fadeOut('fast');
+            });
+            $('#hide-preview').click(function () {
+                $('#show-preview').fadeIn('fast');
+                $('#knowledge-map').fadeOut('fast');
+                $(this).fadeOut('fast');
             })
         },
 
@@ -673,7 +689,8 @@
         UI.importDialogForm();
         UI.importDialogChooseCustom();
         UI.importWarning();
-        UI.showHotKey()
+        UI.showHotKey();
+        UI.showPreview();
         UI.export();
 
         $('#import').trigger('click');
