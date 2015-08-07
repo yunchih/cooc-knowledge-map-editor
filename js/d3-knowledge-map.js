@@ -1,3 +1,5 @@
+
+
 function createPreview (data) {
 
   var width = window.innerWidth,
@@ -18,6 +20,8 @@ function createPreview (data) {
   var link = svg.selectAll(".link"),
       node = svg.selectAll(".node");
    
+   enableResponsive();
+
   // *********** Convert flat data into a nice tree ***************
   // create a name: node map
 
@@ -225,3 +229,13 @@ function createPreview (data) {
   
 }
 
+function enableResponsive () {
+  var chart = $("#knowledge-map > svg"),
+      container = chart.parent();
+      
+  $(window).on("resize", function() {
+      chart.attr("width", container.width());
+      chart.attr("height", container.height());
+  }).trigger("resize");
+
+}
