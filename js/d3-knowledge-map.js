@@ -30,8 +30,6 @@ function createPreview (data) {
     return map;
   }, {});
 
-  // create the tree array
-  var treeData = [];
   data.forEach(function(node) {
     // add to parent
     var parent = dataMap[node.parent];
@@ -41,45 +39,20 @@ function createPreview (data) {
       (parent.children || (parent.children = []))
         // add node to child array
         .push(node);
-      k_array = [node.name];
-      var next = dataMap[node.parent];
-      while(next){
-        // console.log(next.name);
-        k_array.push(next.name);
-        var next = dataMap[next.parent];
-      }
     } else {
-      // parent is null or missing
-      k_array = [];
-      treeData.push(node);
+      root = node ;
     }
   });
-  k_array = k_array.reverse();
 
-  root = treeData[0];
   var nodes = flatten(root);
 
 
   root.children.forEach(function(d) {
-    if(d.name == k_array[1]){
-      d.children.forEach(function(d) {
-        if(d.name == k_array[2]){
-          
-        }else{
-          d._children = d.children;
-          d.children = null;
-        }
-      });
-    }else{
       d._children = d.children;
       d.children = null;
-    }
-    
   });
+
   update();
-  var linkEnter = null;
-
-
 
   function update() {
 
@@ -99,7 +72,7 @@ function createPreview (data) {
         link = link.data(links, function(d) { return d.target.id; });
 
         link.exit().remove();
-        linkEnter = link.enter().insert("line", ".node").attr("class", "link");
+        var linkEnter = link.enter().insert("line", ".node").attr("class", "link");
         //新增的線變色
       	console.log("linkEnter:"+linkEnter);
       	if(linkEnter!=null){
