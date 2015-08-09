@@ -1,0 +1,43 @@
+.nav-button {
+	margin: 8px;
+}
+
+#form-load-custom {
+	margin: 0 auto;
+}
+
+.alert {
+	margin-top: 10px;
+}
+#form-load-custom > button {
+	margin: 10px 0px 10px 0px;
+}
+#welcome {
+	text-align: center;
+}
+
+#modal-JSON-import .btn{
+	margin: 15px auto;
+}
+
+#modal-export-prompt {
+	text-align: center;
+	margin: 0 auto;
+}
+#modal-export-prompt button {
+	font-size: 16px;
+}
+#knowledge-map > .close {
+	position: absolute;
+	top: 80px;
+	right: 100px;
+}
+#editor-navbar {
+	z-index: 2;
+}
+#knowledge-map {
+	z-index: 1;
+}
+#hide-preview {
+	display:none;
+}

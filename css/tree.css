@@ -36,7 +36,7 @@
     top:24px;
     width:25px
 }
-.tree .node{
+.tree .editor-node {
     -moz-border-radius:5px;
     -webkit-border-radius:5px;
     border:1px solid #999;
@@ -46,6 +46,7 @@
     text-decoration:none;
     position: relative;
     cursor:pointer;
+    outline: 0;
     -webkit-transition: background-color 100ms linear;
     -moz-transition: background-color 100ms linear;
     -o-transition: background-color 100ms linear;
@@ -67,6 +68,47 @@
 .tree i {
     margin-right: 7px;
 }
+.tree .target-node {
+    border-style: ;
+    border-style: double;
+    border-color: #C83809;
+    border-width: 3px;
+}
+.duplicate-node-name {
+     color: #F00000; 
+     font-weight: bold;
+     text-decoration: underline dotted;
+}
+
+#duplicate-node {
+    display: none;
+}
+
+.overlay {
+  background: hsla(1,0%,100%,.9);
+  position: absolute;
+  top: 0;
+  left:0;
+  right:0;
+  min-height: 100%;
+  display: none;
+  list-style-type:none;
+  padding-top: 27px;
+    
+}
+
+#hotkeys section {
+    width: 30%;
+    margin: 100px auto;
+}
+#hotkeys li {
+    list-style-type:none;
+    width: 50%;
+    margin: 30px auto;
+    font-size: 22px;
+}
+
+
 /*
 // Color Pallete
 // http://www.colorcombos.com/color-schemes/211/ColorCombo211.html
