@@ -1,6 +1,6 @@
 (function() {
 
-    var tree = {
+    var Tree = {
 
         init: function() {
             /* Configurations */
@@ -47,47 +47,47 @@
         },
 
         addNode: function (childNodeType) {
-            nodeOp.add(childNodeType);
-            plugin.modal.build('新增', '知識節點......');
+            Node.add(childNodeType);
+            Plugin.modal.build('新增', '知識節點......');
             $('#modal-edit-node').modal('show');
         },
 
         modifyNode: function () {
             // Cache the content so that if user hit 'Cancel', we can recover the original content
-            nodeOp.contentCache = $(tree.targetNode).text();
-            plugin.modal.build('修改', $(tree.targetNode).text());
+            Node.contentCache = $(Tree.targetNode).text();
+            Plugin.modal.build('修改', $(Tree.targetNode).text());
             $('#modal-edit-node').modal('show');
         },
 
         deleteNode: function () {
             // remove the node from tree
-            nodeOp.remove($(tree.targetNode).parent());
+            Node.remove($(Tree.targetNode).parent());
 
             // remove the node from our data ( which will be exported )
-            dataOp.export.remove(nodeOp.getContent().text())
+            Data.export.remove(Node.getContent().text())
         },
 
         goParentNode: function () {
-            nodeOp.changeFocusingNode( $(tree.targetNode).closest('ul').siblings('.editor-node') );
+            Node.changeFocusingNode( $(Tree.targetNode).closest('ul').siblings('.editor-node') );
         },
         goChildNode: function () {
-            plugin.toggleCollapsible(tree.targetNode);
-            nodeOp.changeFocusingNode( $(tree.targetNode).siblings('ul').find('.editor-node:first') );
+            Plugin.toggleCollapsible(Tree.targetNode);
+            Node.changeFocusingNode( $(Tree.targetNode).siblings('ul').find('.editor-node:first') );
         },
         goLastSibling: function () {
-            nodeOp.changeFocusingNode( $(tree.targetNode).closest('li').prev().children('.editor-node') );
+            Node.changeFocusingNode( $(Tree.targetNode).closest('li').prev().children('.editor-node') );
         },
         goNextSibling: function () {
-            nodeOp.changeFocusingNode( $(tree.targetNode).closest('li').next().children('.editor-node') );
+            Node.changeFocusingNode( $(Tree.targetNode).closest('li').next().children('.editor-node') );
         }
     };
 
-    var dataOp = {
+    var Data = {
 
         init: function(data) {
-            tree.html = "";
-            tree.rootNode = this.import.buildTree(data);
-            this.import.buildHTML(tree.rootNode);
+            Tree.html = "";
+            Tree.rootNode = this.import.buildTree(data);
+            this.import.buildHTML(Tree.rootNode);
         },
 
         import: {
@@ -97,20 +97,20 @@
              */
             buildNode: function _buildNode(node, dept) {
 
-                tree.html += ('<span tabindex="0" class="editor-node node-' + dept + '" data-toggle="context"><i class="glyphicon ' + tree.getIcon(node) + '"></i>' + node.name + '</span> ');
+                Tree.html += ('<span tabindex="0" class="editor-node node-' + dept + '" data-toggle="context"><i class="glyphicon ' + Tree.getIcon(node) + '"></i>' + node.name + '</span> ');
 
                 dept = dept + 1;
-                tree.html += '<ul data-dept=' + dept + ' >';
+                Tree.html += '<ul data-dept=' + dept + ' >';
 
                 if (node.children) {
                     $.each(node.children, function(index, child) {
-                        tree.html += '<li>';
-                        _buildNode(tree.map[child], dept);
-                        tree.html += '</li>';
+                        Tree.html += '<li>';
+                        _buildNode(Tree.map[child], dept);
+                        Tree.html += '</li>';
                     });
                 }
 
-                tree.html += '</ul>';
+                Tree.html += '</ul>';
 
             },
 
@@ -120,13 +120,13 @@
 
                 // Transform the input data into a map, whose key is the name of the node 
                 $.each(data, function(key, node) {
-                    tree.map[node.name] = node;
+                    Tree.map[node.name] = node;
                 });
 
                 // Build `children` array for each node
                 $.each(data, function(index, node) {
 
-                    var parentNode = tree.map[node.parent];
+                    var parentNode = Tree.map[node.parent];
 
                     if (parentNode) {
 
@@ -146,12 +146,12 @@
 
             buildHTML: function(rootNode) {
 
-                tree.html += "<ul><li>";
-                this.buildNode(tree.map[rootNode], 0);
-                tree.html += "</li></ul>";
+                Tree.html += "<ul><li>";
+                this.buildNode(Tree.map[rootNode], 0);
+                Tree.html += "</li></ul>";
 
                 // Apply the collected HTML into our page
-                $(".tree").append(tree.html);
+                $(".tree").append(Tree.html);
 
             },
 
@@ -161,13 +161,13 @@
                 $.getJSON(jsonFilePath, function(data) {
 
                     // Before transforming our data, we shall initialize the necessary utililies
-                    dataOp.init(data);
+                    Data.init(data);
 
                     // Initialize context menu and other plugins.
-                    plugin.init();
+                    Plugin.init();
 
                     // Start listening for click event on nodes.
-                    nodeOp.clickListener();
+                    Node.clickListener();
 
                     $('#modal-JSON-import').modal('hide');
 
@@ -190,13 +190,13 @@
                 var newNode = {};
                 
                 // Assign default value to the new node
-                $.extend(newNode, tree.jsonModelDefault);
+                $.extend(newNode, Tree.jsonModelDefault);
 
                 newNode.name = you;
                 newNode.parent = yourParent;
 
                 // Add it into our map ( which will be exported )
-                tree.map[you] = newNode;
+                Tree.map[you] = newNode;
                 
                 return true;
             },
@@ -206,21 +206,21 @@
              */
             remove: function _remove (you) {
 
-                if( you && tree.map[ you ].children ){
+                if( you && Tree.map[ you ].children ){
                     // Recursively remove your children
-                    $.each(tree.map[ you ].children, function(index, child) {
+                    $.each(Tree.map[ you ].children, function(index, child) {
                             _remove(child);
                     });
                 }
-                delete tree.map[you];
+                delete Tree.map[you];
             },
 
             /*
              * Transform the values of data map into plain array 
              */
             transformIntoArray: function () {
-                return $.map(tree.map, function(value, key) {
-                    // We don't we children in our JSON
+                return $.map(Tree.map, function(value, key) {
+                    // We don't need children in our JSON
                     delete value.children;
                     return [value];
                 });
@@ -239,7 +239,7 @@
         },
 
         cleanUp: function () {
-            tree.map = {}; 
+            Tree.map = {}; 
 
             // Clean the HTML
             $(".tree").html("");
@@ -248,7 +248,7 @@
     };
 
 
-    var plugin = {
+    var Plugin = {
 
         init: function() {
             this.contextMenu();
@@ -264,11 +264,10 @@
          */
         collapsible: function() {
 
-            nodeOp.makeCollapsible($('.tree li').has('li'));
+            Node.makeCollapsible($('.tree li').has('li'));
 
             var toggle = this.toggleCollapsible;
             $('.tree').on('click', ' li.collapsible > span', function(e) {
-                console.log("clicked");
                 toggle(this,"clicked");
                 e.stopPropagation();
             });
@@ -276,13 +275,12 @@
 
         toggleCollapsible: function (targetNode ,isClicked) {
             var children = $(targetNode).parent('li.collapsible').find(' > ul > li');
-            console.log("Toggle");
             if ( children.is(":visible") && isClicked ) {
                 children.hide('fast');
-                $(targetNode).attr('title', '開啟').find(' > i').addClass(tree.node_plus_icon).removeClass(tree.node_minus_icon);
+                $(targetNode).attr('title', '開啟').find(' > i').addClass(Tree.node_plus_icon).removeClass(Tree.node_minus_icon);
             } else {
                 children.show('fast');
-                $(targetNode).attr('title', '關閉').find(' > i').addClass(tree.node_minus_icon).removeClass(tree.node_plus_icon);
+                $(targetNode).attr('title', '關閉').find(' > i').addClass(Tree.node_minus_icon).removeClass(Tree.node_plus_icon);
             }
         },
 
@@ -295,7 +293,7 @@
             // Most of the operations apply changes to targetNode
             $('.editor-node').on('contextmenu', function() {
                 /* Update targetNode ( the one on which user is right clicking ) */
-                tree.targetNode = this;
+                Tree.targetNode = this;
             });
 
             // Bind the modal object into a local variable, 
@@ -318,16 +316,16 @@
 
                     switch(operation) {
                         case "delete-node":
-                            tree.deleteNode();
+                            Tree.deleteNode();
                             break;
                         case "add-child-node":
-                            tree.addNode('child');
+                            Tree.addNode('child');
                             break;
                         case "add-sibling-node":
-                            tree.addNode('sibling');
+                            Tree.addNode('sibling');
                             break;
                         default:
-                            tree.modifyNode();
+                            Tree.modifyNode();
                     }
                 }
             })
@@ -362,23 +360,23 @@
                 /* Update the value of new field constantly */
                 $('#modal-input').keyup(function() {
                     var input = $('#modal-input').val();
-                    nodeOp.getContent().replaceWith(input);
+                    Node.getContent().replaceWith(input);
                 });
 
                 $('#modal-edit-node form').submit(function () {
-                    var you = nodeOp.getContent().text();
-                    var yourParent = nodeOp.getParentContent().text();
+                    var you = Node.getContent().text();
+                    var yourParent = Node.getParentContent().text();
                             
                     // If user does not modify the default value when submitting, purge the newly created node.
                     if (!you || you == this.newNodeDefaultValue) {
-                    //      if (!$(tree.targetNode).text() || $(tree.targetNode).text() == this.newNodeDefaultValue) {
-                        nodeOp.remove($(tree.targetNode).closest('li'));
+                    //      if (!$(Tree.targetNode).text() || $(Tree.targetNode).text() == this.newNodeDefaultValue) {
+                        Node.remove($(Tree.targetNode).closest('li'));
                     // The name newly created node already exists!!!
-                    } else if( tree.map[you] ){
+                    } else if( Tree.map[you] ){
                         UI.exportWarnAgainstDuplicateName(you);
                     }
                     else{
-                        dataOp.export.add( you,yourParent );
+                        Data.export.add( you,yourParent );
                         $('#modal-edit-node').modal('hide');
                     }
 
@@ -395,14 +393,14 @@
 
                     // If there is content cache, the user is giving up an edit.  
                     // So we recover the content of node he is editing.
-                    if( nodeOp.contentCache ){
-                        nodeOp.getContent().replaceWith(nodeOp.contentCache);
-                        nodeOp.contentCache = "";
+                    if( Node.contentCache ){
+                        Node.getContent().replaceWith(Node.contentCache);
+                        Node.contentCache = "";
                     }
                     // The user is giving up creating a new node,
                     // so we simply remove the newly created node.
                     else{
-                        nodeOp.remove($(tree.targetNode).closest('li'));
+                        Node.remove($(Tree.targetNode).closest('li'));
                     }
                 });
             }
@@ -410,45 +408,45 @@
 
         hotkey: function () {
 
-            $('.editor-node').bind('keydown', tree.hotkey.addChildNode, function(event){
+            $('.editor-node').bind('keydown', Tree.hotkey.addChildNode, function(event){
                 event.preventDefault();
-                tree.addNode('child');
-            }).bind('keydown', tree.hotkey.addSiblingNode, function(event){
+                Tree.addNode('child');
+            }).bind('keydown', Tree.hotkey.addSiblingNode, function(event){
                 event.preventDefault();
-                tree.addNode('sibling');
-            }).bind('keydown', tree.hotkey.modifyNode, function(event){
+                Tree.addNode('sibling');
+            }).bind('keydown', Tree.hotkey.modifyNode, function(event){
                 event.preventDefault();
-                tree.modifyNode();
-            }).bind('keydown', tree.hotkey.deleteNode, function(event){
+                Tree.modifyNode();
+            }).bind('keydown', Tree.hotkey.deleteNode, function(event){
                 event.preventDefault();
-                tree.deleteNode();
-            }).bind('keydown', tree.hotkey.goParentNode, function(event){
+                Tree.deleteNode();
+            }).bind('keydown', Tree.hotkey.goParentNode, function(event){
                 event.preventDefault();
-                tree.goParentNode();
-            }).bind('keydown', tree.hotkey.goChildNode, function(event){
+                Tree.goParentNode();
+            }).bind('keydown', Tree.hotkey.goChildNode, function(event){
                 event.preventDefault();
-                tree.goChildNode();
-            }).bind('keydown', tree.hotkey.goNextSibling, function(event){
+                Tree.goChildNode();
+            }).bind('keydown', Tree.hotkey.goNextSibling, function(event){
                 event.preventDefault();
-                tree.goNextSibling();
-            }).bind('keydown', tree.hotkey.goLastSibling, function(event){
+                Tree.goNextSibling();
+            }).bind('keydown', Tree.hotkey.goLastSibling, function(event){
                 event.preventDefault();
-                tree.goLastSibling();
+                Tree.goLastSibling();
             });
         }
     };
 
-    var nodeOp = {
+    var Node = {
 
         init: function() {
-            this.newNodeTemplate = "<li><span tabindex='0' class='editor-node' data-toggle='context' >" + tree.newNodeDefaultValue + "</span><ul></ul></li> ";
+            this.newNodeTemplate = "<li><span tabindex='0' class='editor-node' data-toggle='context' >" + Tree.newNodeDefaultValue + "</span><ul></ul></li> ";
             this.contentCache = "";
         },
 
         // targetType could be "child" or "sibling", all relative to the current selected node.
         add: function(targetType) {
              // Get current dept
-            var dept = $(tree.targetNode).siblings('ul').attr('data-dept');
+            var dept = $(Tree.targetNode).siblings('ul').attr('data-dept');
             var newParentNode;
 
             // Adding a child node
@@ -457,28 +455,28 @@
                 this.removeLeafIcon();
 
                 // Make the parent collapsible
-                this.makeCollapsible($(tree.targetNode).parent('li'));
+                this.makeCollapsible($(Tree.targetNode).parent('li'));
 
-                newParentNode = $(tree.targetNode).siblings('ul')
+                newParentNode = $(Tree.targetNode).siblings('ul')
             }   
             // Adding a sibling node
             else{
-                newParentNode = $(tree.targetNode).closest('ul');
+                newParentNode = $(Tree.targetNode).closest('ul');
             }
 
             // Append to target ul and change the focus
             this.changeFocusingNode( $(this.newNodeTemplate).appendTo(newParentNode).children('.editor-node') );
 
             // Set next dept
-            $(tree.targetNode).siblings('ul').attr('data-dept', parseInt(dept) + 1);
+            $(Tree.targetNode).siblings('ul').attr('data-dept', parseInt(dept) + 1);
 
             // Add icon
-            tree.targetNode
+            Tree.targetNode
                 .addClass('node-' + dept)
-                .prepend('<i class="glyphicon ' + tree.getIcon({}) + '"></i>'); // Prepend leaf glyph
+                .prepend('<i class="glyphicon ' + Tree.getIcon({}) + '"></i>'); // Prepend leaf glyph
 
             // Restart context menu
-            plugin.contextMenu();
+            Plugin.contextMenu();
         },
 
         remove: function($node) {
@@ -490,15 +488,15 @@
         },
 
         getContent: function() {
-            return $(tree.targetNode).contents().last();
+            return $(Tree.targetNode).contents().last();
         },
 
         getParentContent: function() {
-            return $(tree.targetNode).closest('ul').siblings('.editor-node').contents().last();
+            return $(Tree.targetNode).closest('ul').siblings('.editor-node').contents().last();
         },
 
         removeLeafIcon: function() {
-            $(tree.targetNode).children("." + tree.node_leaf_icon).removeClass(tree.node_leaf_icon).addClass(tree.node_minus_icon);
+            $(Tree.targetNode).children("." + Tree.node_leaf_icon).removeClass(Tree.node_leaf_icon).addClass(Tree.node_minus_icon);
         },
 
         makeCollapsible: function($node) {
@@ -518,8 +516,8 @@
 
         changeFocusingNode: function (focusingNode) {
             if( $(focusingNode).length ){
-                $(tree.targetNode).removeClass('target-node');
-                tree.targetNode = focusingNode;
+                $(Tree.targetNode).removeClass('target-node');
+                Tree.targetNode = focusingNode;
                 $(focusingNode).addClass('target-node');
             }
         }
@@ -537,7 +535,7 @@
 
                 // If there is unexported data, prompt 
                 // user to export them first.
-                if( ! $.isEmptyObject(tree.map) ){
+                if( ! $.isEmptyObject(Tree.map) ){
                     $("#modal-export-prompt").modal('show');
                 }
                 else{
@@ -557,7 +555,7 @@
                 e.preventDefault();
 
                 // Clean our map immediately ( the user choose not to preserve it. )
-                dataOp.cleanUp();
+                Data.cleanUp();
 
                 $('#modal-export-prompt').on('hidden.bs.modal', function (e) {
                   $('#import').trigger('click');
@@ -571,7 +569,7 @@
                 $('#export').trigger('click');
 
                 // Clean our map when export is done 
-                setTimeout(dataOp.cleanUp,1);
+                setTimeout(Data.cleanUp,1);
             })
         },
         
@@ -581,7 +579,7 @@
              */
             $( "#form-load-custom > .btn" ).on( "click" , function(e) {
                 e.preventDefault();
-                dataOp.import.loadJSON($("#form-load-custom > input").val());
+                Data.import.loadJSON($("#form-load-custom > input").val());
             });
         },
 
@@ -590,7 +588,7 @@
              * Load default JSON file
              */
             $( "#load-blank" ).on( "click", function() {
-                dataOp.import.loadJSON(tree.blankJSONFilePath);
+                Data.import.loadJSON(Tree.blankJSONFilePath);
             });
              /*
               * Show input field when user choose to import custom JSON
@@ -604,7 +602,7 @@
              * Load default JSON file
              */
             $( "#load-default" ).on( "click", function() {
-                dataOp.import.loadJSON(tree.defaultJSONFilePath);
+                Data.import.loadJSON(Tree.defaultJSONFilePath);
             });
 
         },
@@ -614,7 +612,7 @@
              * Export JSON
              */
             $('#export').on('click', function() {
-                dataOp.export.prepareJSON();
+                Data.export.prepareJSON();
                 $('#modal-JSON-export').modal('show');
             });
         },
@@ -651,7 +649,8 @@
         showPreview: function () {
 
             $('#show-preview').click(function () {
-                createPreview( dataOp.export.transformIntoArray() );
+                // clone the object by jQuery.extend({}, oldObject) 
+                createPreview( Data.export.transformIntoArray() );
                 $('#knowledge-map').fadeIn('fast');
                 $('#hide-preview').fadeIn('fast');
                 $(this).fadeOut('fast');
@@ -679,10 +678,10 @@
     $(function() {
         
         /* Initializing global configurations */
-        tree.init();
+        Tree.init();
 
         /* Initializing node operations */
-        nodeOp.init();
+        Node.init();
 
         /* ----------  UI  ---------- */
         UI.importDialogTrigger();
@@ -693,6 +692,7 @@
         UI.showPreview();
         UI.export();
 
+        /* Trigger import prompt automatically at startup */
         $('#import').trigger('click');
     });
 
