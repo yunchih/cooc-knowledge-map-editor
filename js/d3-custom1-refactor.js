@@ -1,3 +1,21 @@
+/****
+***
+**
+*
+
+1. remove k_array
+2. seperate node open/collapse into seperate functions.
+3. wrap the whole file into a self-calling anomynous function to prevent global variable pollution.
+4. remove some console.log
+5. seperate line color manipulation into seperate function.
+6. rename variable/function names  
+*
+**
+***
+****/
+
+
+
 (function(){ 
 
   var width = 750,
@@ -38,13 +56,13 @@
     }
   });
 
-  var nodes = flatten(root);
+  var nodes = getAllChildrenNode(root);
   collapseRoot();
   update();
     
   function update() {
 
-    var nodes = flatten(root),
+    var nodes = getAllChildrenNode(root),
         links = d3.layout.tree().links(nodes);
 
     // Restart the force layout.
@@ -99,47 +117,52 @@
   }
 
   // Toggle children on click.
-  function click(d) {
+  function click(node) {
     if (d3.event.defaultPrevented){
     	force.stop();
     	return; // ignore drag
     } 
 
-  //清除預設
-  	d3.selectAll("line.selected").classed("selected", false);
-
     // If the node has uncollapsed nodes
-    if (d.children) {
-      collapseNode(d);
+    if (node.children) {
+      collapseNode(node);
     } else {
-      openNode(d);
-      d.children.forEach( collapseNodeRecursively );
+      openNode(node);
+      node.children.forEach( collapseNodeRecursively );
     }
+    
+    toggleLineColor();
 
-      
-  	//剩下的連結變色
-   	d3.selectAll("line")       
+    setSession(node.name);
+
+    update();
+
+  }
+
+  function fix_node(node) {
+  	node.fixed = true;             /* 設 node.fixed = true 就可以固定節點 */
+  }
+
+  function toggleLineColor () {
+    //清除預設
+    d3.selectAll("line.selected").classed("selected", false);
+
+    //剩下的連結變色
+    d3.selectAll("line")       
         .classed("selected", function(d2) { 
 
-  	  	if(d2.source.name == d.name || d2.target.name == d.name){
-  	  		return true; 
-  	  	}else{
-  	  		return false; 
-  	  	}
+        if(d2.source.name == d.name || d2.target.name == d.name){
+          return true; 
+        }else{
+          return false; 
+        }
 
         });
     }
+
     d3.select("g.selected").classed("selected", false);
     d3.select(this).classed("selected", true);
     d3.select("g.selected").select("circle");
-
-    setSession(d.name);
-    update();
-  }
-
-  function fix_node(d) {
-  	d.fixed = true;             /* 設 d.fixed = true 就可以固定節點 */
-  	console.log(this);
   }
 
   function collapseRoot() {
@@ -168,7 +191,7 @@
   }
 
   // Returns a list of all nodes under the root.
-  function flatten(root) {
+  function getAllChildrenNode(root) {
     var nodes = [], i = 0;
 
     function recurse(node) {
@@ -180,7 +203,7 @@
     recurse(root);
     return nodes;
   }
-  
+
   function setSession(knowledge_map_name){
     $.ajax({
         type: 'POST',
