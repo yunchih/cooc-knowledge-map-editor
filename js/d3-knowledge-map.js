@@ -1,10 +1,9 @@
 
 
-function createPreview (data) {
+function createPreview ( dataMap, root  ) {
 
   var width = window.innerWidth,
-      height = window.innerHeight,
-      root;
+      height = window.innerHeight;
 
   var force = d3.layout.force()
       .linkDistance(80)
@@ -22,41 +21,12 @@ function createPreview (data) {
    
    enableResponsive();
 
-  // *********** Convert flat data into a nice tree ***************
-  // create a name: node map
-
-  var dataMap = data.reduce(function(map, node) {
-    map[node.name] = node;
-    return map;
-  }, {});
-
-  data.forEach(function(node) {
-    // add to parent
-    var parent = dataMap[node.parent];
-      //console.log(node.name);
-    if (parent) {
-      // create child array if it doesn't exist
-      (parent.children || (parent.children = []))
-        // add node to child array
-        .push(node);
-    } else {
-      root = node ;
-    }
-  });
-
-  var nodes = flatten(root);
-
-
-  root.children.forEach(function(d) {
-      d._children = d.children;
-      d.children = null;
-  });
-
+  var nodes = flatten(dataMap, root );
   update();
 
   function update() {
 
-        var nodes = flatten(root),
+        var nodes = flatten(dataMap, root ),
             links = d3.layout.tree().links(nodes);
         //console.log(links);
         
@@ -74,7 +44,6 @@ function createPreview (data) {
         link.exit().remove();
         var linkEnter = link.enter().insert("line", ".node").attr("class", "link");
         //新增的線變色
-      	console.log("linkEnter:"+linkEnter);
       	if(linkEnter!=null){
         		linkEnter.classed("selected",true);
         	}
@@ -187,16 +156,27 @@ function createPreview (data) {
   }
 
   // Returns a list of all nodes under the root.
-  function flatten(root) {
+  function flatten(dataMap, rootName) {
         var nodes = [], i = 0;
 
-        function recurse(node) {
-          if (node.children) node.children.forEach(recurse);
+        function recurse(nodeName) {
+          var node = dataMap[ nodeName ];
+          if (node.children){
+            node._children = [];
+            node.children.forEach(function( child, index, children ){
+              node._children.push( recurse(child) );
+            });
+            delete node.children;
+          } 
+
           if (!node.id) node.id = ++i;
+
           nodes.push(node);
+          return node;
         }
 
-        recurse(root);
+        recurse(rootName);
+          console.log(nodes);
         return nodes;
   }
   

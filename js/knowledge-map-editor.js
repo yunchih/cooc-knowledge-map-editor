@@ -95,7 +95,7 @@
             /*
              * Recursively tranverse the children array of each node and turn them into HTML
              */
-            buildNode: function _buildNode(node, dept) {
+            buildNode: function _buildNode (node, dept) {
 
                 Tree.html += ('<span tabindex="0" class="editor-node node-' + dept + '" data-toggle="context"><i class="glyphicon ' + Tree.getIcon(node) + '"></i>' + node.name + '</span> ');
 
@@ -103,7 +103,7 @@
                 Tree.html += '<ul data-dept=' + dept + ' >';
 
                 if (node.children) {
-                    $.each(node.children, function(index, child) {
+                    $.each(node.children, function (index, child) {
                         Tree.html += '<li>';
                         _buildNode(Tree.map[child], dept);
                         Tree.html += '</li>';
@@ -649,8 +649,9 @@
         showPreview: function () {
 
             $('#show-preview').click(function () {
-                // clone the object by jQuery.extend({}, oldObject) 
-                createPreview( Data.export.transformIntoArray() );
+                var clonedTree = $.extend(true, {}, Tree.map);
+                var clonedRoot = $.extend(true, {}, Tree.map[ Tree.rootNode ]);
+                createPreview( clonedTree, Tree.rootNode );
                 $('#knowledge-map').fadeIn('fast');
                 $('#hide-preview').fadeIn('fast');
                 $(this).fadeOut('fast');
