@@ -105,7 +105,7 @@
                 if (node.children) {
                     $.each(node.children, function (index, child) {
                         Tree.html += '<li>';
-                        _buildNode(Tree.map[child], dept);
+                        _buildNode( child, dept);
                         Tree.html += '</li>';
                     });
                 }
@@ -131,12 +131,12 @@
                     if (parentNode) {
 
                         // If parentNode still doesn't have children, initialize it as empty array and push in a new one.
-                        (parentNode.children || (parentNode.children = [])).push(node.name);
+                        (parentNode.children || (parentNode.children = [])).push(node);
 
                     } else {
                         // If a node does not have parent, it is the root.
                         node.root = true;
-                        rootNode = node.name;
+                        rootNode = node;
                     }
                 });
 
@@ -147,7 +147,7 @@
             buildHTML: function(rootNode) {
 
                 Tree.html += "<ul><li>";
-                this.buildNode(Tree.map[rootNode], 0);
+                this.buildNode(rootNode, 0);
                 Tree.html += "</li></ul>";
 
                 // Apply the collected HTML into our page
@@ -649,9 +649,8 @@
         showPreview: function () {
 
             $('#show-preview').click(function () {
-                var clonedTree = $.extend(true, {}, Tree.map);
-                var clonedRoot = $.extend(true, {}, Tree.map[ Tree.rootNode ]);
-                createPreview( clonedTree, Tree.rootNode );
+                var clonedRoot = $.extend(true, {}, Tree.rootNode );
+                createPreview( clonedRoot );
                 $('#knowledge-map').fadeIn('fast');
                 $('#hide-preview').fadeIn('fast');
                 $(this).fadeOut('fast');
