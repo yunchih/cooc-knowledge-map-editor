@@ -3,12 +3,15 @@
 **
 *
 
+Refactor notes:
+
 1. remove k_array
 2. seperate node open/collapse into seperate functions.
 3. wrap the whole file into a self-calling anomynous function to prevent global variable pollution.
 4. remove some console.log
 5. seperate line color manipulation into seperate function.
 6. rename variable/function names  
+
 *
 **
 ***
