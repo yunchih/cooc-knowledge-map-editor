@@ -107,13 +107,16 @@
     margin: 30px auto;
     font-size: 22px;
 }
-
+#modal-edit-node input {
+    height: 36px;
+    width: 100%;
+}
 
 /*
 // Color Pallete
 // http://www.colorcombos.com/color-schemes/211/ColorCombo211.html
 */
-.tree .glyphicon-leaf {
+.tree .icon-leaf {
     color: green;
 }
 .tree .node-0 {
@@ -186,3 +189,4 @@
     -webkit-animation: shake 0.7s;/*for webkit browsers*/
     -moz-animation: shake 0.7s;/*for mozilla browser*/
 }
+

@@ -6,10 +6,10 @@
             /* Configurations */
             this.defaultJSONFilePath = 'data/tree-data.json';
             this.blankJSONFilePath   = 'data/default-new-data.json';
-            this.root_icon           = "glyphicon-folder-open";
-            this.node_minus_icon     = "glyphicon-minus";
-            this.node_plus_icon      = "glyphicon-plus";
-            this.node_leaf_icon      = "glyphicon-leaf";
+            this.root_icon           = "icon-folder-open";
+            this.node_minus_icon     = "icon-minus-sign";
+            this.node_plus_icon      = "icon-plus-sign";
+            this.node_leaf_icon      = "icon-leaf";
             this.hotkey = {
                 addChildNode:   "c",
                 addSiblingNode: "v",
@@ -97,7 +97,7 @@
              */
             buildNode: function _buildNode (node, dept) {
 
-                Tree.html += ('<span tabindex="0" class="editor-node node-' + dept + '" data-toggle="context"><i class="glyphicon ' + Tree.getIcon(node) + '"></i>' + node.name + '</span> ');
+                Tree.html += ('<span tabindex="0" class="editor-node node-' + dept + '" data-toggle="context"><i class="' + Tree.getIcon(node) + '"></i>' + node.name + '</span> ');
 
                 dept = dept + 1;
                 Tree.html += '<ul data-dept=' + dept + ' >';

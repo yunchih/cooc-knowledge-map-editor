@@ -4,75 +4,13 @@
         <meta charset="UTF-8">
          <title>酷課學習知識地圖編輯器</title>
 
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/tree.css">
         <link rel="stylesheet" href="css/layout.css">
         <link rel="stylesheet" href="css/preview.css">
     </head>
     <body>
- 
-        <!--                                  -->
-        <!--    Mundane UI: Context menu      -->
-        <!--                                  -->
-        <div id="context-menu">
-          <ul class="dropdown-menu" role="menu">
-            <li><a tabindex="-1" id="modify-node">修改</a></li>
-             <li class="divider"></li>
-             <li><a tabindex="-1" id="add-child-node">新增子節點</a></li>
-             <li class="divider"></li>
-             <li><a tabindex="-1" id="add-sibling-node">新增鄰節點</a></li>
-             <li class="divider"></li>
-             <li><a tabindex="-1" id="delete-node">刪除節點</a></li>
-          </ul>
-        </div>
-        
-        <!--                                  -->
-        <!-- Mundane UI: Node editing modal   -->
-        <!--                                  -->
-        <div id="modal-edit-node" class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 id="modal-title"></h4>
-              </div>
-              <div class="modal-body">
-                <form  onsubmit="return false">
-                    <input class="form-control input-lg" type="text" id="modal-input" class="input-lg">
-                </form>
-                <div class="alert alert-danger" role="alert" id="duplicate-node">
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                  <span class="sr-only">Ops:</span>
-                  <span id="alert-body"></span>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="modal-submit">確定</button>
-                <button type="button" class="btn btn-default" id="modal-cancel" data-dismiss="modal">取消</button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!--                                                      -->
-        <!-- Mundane UI: Warn user against duplicate node names   -->
-        <!--                                                      -->
-        <div id="modal-edit-node" class="modal fade">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 id="modal-title"></h4>
-              </div>
-              <div class="modal-body">
-                <form class="contact" name="contact">
-                    <input class="form-control input-lg" type="text" id="modal-input" class="input-lg">
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="modal-submit" data-dismiss="modal">確定</button>
-                <button type="button" class="btn btn-default" id="modal-cancel" data-dismiss="modal">取消</button>
-              </div>
-            </div>
-          </div>
-        </div>
+
 
         <!--                                  -->
         <!--     Mundane UI: Options list     -->
@@ -104,7 +42,7 @@
         <!--                                  -->
         <!--  Optional UI: JSON export modal  -->
         <!--                                  -->
-        <div id="modal-JSON-export" class="modal fade">
+        <div id="modal-JSON-export" class="modal hide fade">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -126,7 +64,7 @@
         <!--    Optional UI: Initial prompt modal    -->
         <!-- (shown when user first enters the site) -->
         <!--                                         -->
-        <div id="modal-JSON-import" class="modal fade">
+        <div id="modal-JSON-import" class="modal hide fade">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -160,7 +98,7 @@
         <!--  knowledge map before importing a       -->
         <!--  new one                                -->
         <!--                                         -->
-        <div id="modal-export-prompt" class="modal fade">
+        <div id="modal-export-prompt" class="modal hide fade">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -198,11 +136,73 @@
           </section>
         </div>
         
-
+ 
+        <!--                                  -->
+        <!--    Mundane UI: Context menu      -->
+        <!--                                  -->
+        <div id="context-menu">
+          <ul class="dropdown-menu" role="menu">
+            <li><a tabindex="-1" id="modify-node">修改</a></li>
+             <li class="divider"></li>
+             <li><a tabindex="-1" id="add-child-node">新增子節點</a></li>
+             <li class="divider"></li>
+             <li><a tabindex="-1" id="add-sibling-node">新增鄰節點</a></li>
+             <li class="divider"></li>
+             <li><a tabindex="-1" id="delete-node">刪除節點</a></li>
+          </ul>
+        </div>
+        
+        <!--                                  -->
+        <!-- Mundane UI: Node editing modal   -->
+        <!--                                  -->
+        <div id="modal-edit-node" class="modal hide fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 id="modal-title"></h4>
+              </div>
+              <div class="modal-body">
+                <form  onsubmit="return false">
+                    <input type="text" id="modal-input" >
+                </form>
+                <div class="alert alert-danger" role="alert" id="duplicate-node">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <span class="sr-only">Ops:</span>
+                  <span id="alert-body"></span>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal-submit">確定</button>
+                <button type="button" class="btn btn-default" id="modal-cancel" data-dismiss="modal">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--                                                      -->
+        <!-- Mundane UI: Warn user against duplicate node names   -->
+        <!--                                                      -->
+        <div id="modal-edit-node" class="modal hide fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 id="modal-title"></h4>
+              </div>
+              <div class="modal-body">
+                <form class="contact" name="contact">
+                    <input class="form-control input-lg" type="text" class="input-lg">
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="modal-submit" data-dismiss="modal">確定</button>
+                <button type="button" class="btn btn-default" id="modal-cancel" data-dismiss="modal">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
         
         <!-- general dependencies -->  
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 
         <!-- knowledge map dependencies -->
         <script src="js/contextmenu.js" ></script>   

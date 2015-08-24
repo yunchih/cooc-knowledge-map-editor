@@ -1,4 +1,5 @@
 function createPreview(root) {
+
   var width = window.innerWidth,
       height = window.innerHeight;
 
@@ -124,11 +125,14 @@ function createPreview(root) {
   }
 
   function collapseRoot() {
-    root.children.forEach(function (childNode) {
-      if(childNode){
-        collapseNode(childNode);
-      }
-    });
+    if( root.children ){
+      root.children.forEach(function (childNode) {
+        if(childNode){
+          collapseNode(childNode);
+        }
+      }); 
+    }
+    
   }
 
   function collapseNode (node) {
