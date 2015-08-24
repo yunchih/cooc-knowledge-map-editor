@@ -1,9 +1,11 @@
 
 # 酷課學習網知識地圖編輯器
 
-酷課學習網知識地圖最後會長[這樣](http://163.28.17.130/coocLearning/kmap/chemistry)
+酷課學習網知識地圖最後長[這樣](http://163.28.17.130/coocLearning/kmap/chemistry)
 
-我寫了一個完整 UI 版本，請見此 [demo](http://yunchih.github.io/cooc-knowledge-map-editor)
+完整 UI 版本，請見此 [demo](http://yunchih.github.io/cooc-knowledge-map-editor)
+
+酷課雲知識地圖的 `d3-custom1.js` 在[這裡](https://github.com/yunchih/cooc-knowledge-map-editor/blob/master/js/d3-custom1-refactor.js)有一個簡單的改寫。
 
 所有完整版的程式碼接在 `gh-pages` branch 上面，您現在在看的 `master` branch 是最簡版，可供您整合至您的專案當中。
 
