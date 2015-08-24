@@ -124,11 +124,13 @@ function createPreview(root) {
   }
 
   function collapseRoot() {
-    root.children.forEach(function (childNode) {
-      if(childNode){
-        collapseNode(childNode);
-      }
-    });
+    if(root.children){
+      root.children.forEach(function (childNode) {
+        if(childNode){
+          collapseNode(childNode);
+        }
+      });
+    }
   }
 
   function collapseNode (node) {
