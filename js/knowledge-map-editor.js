@@ -268,7 +268,6 @@
 
             var toggle = this.toggleCollapsible;
             $('.tree').on('click', ' li.collapsible > span', function(e) {
-                console.log("clicked");
                 toggle(this,"clicked");
                 e.stopPropagation();
             });
@@ -410,28 +409,28 @@
 
         hotkey: function () {
 
-            $('.editor-node').bind('keydown', tree.hotkey.addChildNode, function(event){
+            $('.tree').on('keydown', '.editor-node', tree.hotkey.addChildNode, function(event){
                 event.preventDefault();
                 tree.addNode('child');
-            }).bind('keydown', tree.hotkey.addSiblingNode, function(event){
+            }).on('keydown', '.editor-node', tree.hotkey.addSiblingNode, function(event){
                 event.preventDefault();
                 tree.addNode('sibling');
-            }).bind('keydown', tree.hotkey.modifyNode, function(event){
+            }).on('keydown', '.editor-node', tree.hotkey.modifyNode, function(event){
                 event.preventDefault();
                 tree.modifyNode();
-            }).bind('keydown', tree.hotkey.deleteNode, function(event){
+            }).on('keydown', '.editor-node', tree.hotkey.deleteNode, function(event){
                 event.preventDefault();
                 tree.deleteNode();
-            }).bind('keydown', tree.hotkey.goParentNode, function(event){
+            }).on('keydown', '.editor-node', tree.hotkey.goParentNode, function(event){
                 event.preventDefault();
                 tree.goParentNode();
-            }).bind('keydown', tree.hotkey.goChildNode, function(event){
+            }).on('keydown', '.editor-node', tree.hotkey.goChildNode, function(event){
                 event.preventDefault();
                 tree.goChildNode();
-            }).bind('keydown', tree.hotkey.goNextSibling, function(event){
+            }).on('keydown', '.editor-node', tree.hotkey.goNextSibling, function(event){
                 event.preventDefault();
                 tree.goNextSibling();
-            }).bind('keydown', tree.hotkey.goLastSibling, function(event){
+            }).on('keydown', '.editor-node', tree.hotkey.goLastSibling, function(event){
                 event.preventDefault();
                 tree.goLastSibling();
             });
@@ -511,13 +510,15 @@
 
         clickListener: function () {
             var changeFocus = this.changeFocusingNode;
-            $('.editor-node').on('click', function () {
+            $('.tree').on('click', '.editor-node', function () {
                 changeFocus(this);
             })
         },
 
         changeFocusingNode: function (focusingNode) {
+            console.log("Change Focus");
             if( $(focusingNode).length ){
+                console.log($(focusingNode));
                 $(tree.targetNode).removeClass('target-node');
                 tree.targetNode = focusingNode;
                 $(focusingNode).addClass('target-node');
