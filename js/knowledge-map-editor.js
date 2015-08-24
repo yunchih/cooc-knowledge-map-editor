@@ -408,28 +408,28 @@
 
         hotkey: function () {
 
-            $('.editor-node').bind('keydown', Tree.hotkey.addChildNode, function(event){
+            $('.tree').on('keydown','.editor-node', Tree.hotkey.addChildNode, function(event){
                 event.preventDefault();
                 Tree.addNode('child');
-            }).bind('keydown', Tree.hotkey.addSiblingNode, function(event){
+            }).on('keydown','.editor-node', Tree.hotkey.addSiblingNode, function(event){
                 event.preventDefault();
                 Tree.addNode('sibling');
-            }).bind('keydown', Tree.hotkey.modifyNode, function(event){
+            }).on('keydown','.editor-node', Tree.hotkey.modifyNode, function(event){
                 event.preventDefault();
                 Tree.modifyNode();
-            }).bind('keydown', Tree.hotkey.deleteNode, function(event){
+            }).on('keydown','.editor-node', Tree.hotkey.deleteNode, function(event){
                 event.preventDefault();
                 Tree.deleteNode();
-            }).bind('keydown', Tree.hotkey.goParentNode, function(event){
+            }).on('keydown','.editor-node', Tree.hotkey.goParentNode, function(event){
                 event.preventDefault();
                 Tree.goParentNode();
-            }).bind('keydown', Tree.hotkey.goChildNode, function(event){
+            }).on('keydown','.editor-node', Tree.hotkey.goChildNode, function(event){
                 event.preventDefault();
                 Tree.goChildNode();
-            }).bind('keydown', Tree.hotkey.goNextSibling, function(event){
+            }).on('keydown','.editor-node', Tree.hotkey.goNextSibling, function(event){
                 event.preventDefault();
                 Tree.goNextSibling();
-            }).bind('keydown', Tree.hotkey.goLastSibling, function(event){
+            }).on('keydown','.editor-node', Tree.hotkey.goLastSibling, function(event){
                 event.preventDefault();
                 Tree.goLastSibling();
             });
@@ -509,7 +509,7 @@
 
         clickListener: function () {
             var changeFocus = this.changeFocusingNode;
-            $('.editor-node').on('click', function () {
+            $('.tree').on('click', '.editor-node', function () {
                 changeFocus(this);
             })
         },
