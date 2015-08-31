@@ -183,9 +183,11 @@
 
         init: function() {
             this.collapsible();
-            this.contextMenu();
             this.modal.process();
+            this.contextMenu($('.node'));
+            this.popOver($('.node'));
         },
+
 
         /*
          * A node is collapsible if it is not a leaf
@@ -208,20 +210,32 @@
         },
 
         /*
+         * popover shows the comment on the node.
+         */
+        popOver: function (target) {
+
+            $(target).popover({
+                animation: true,
+                trigger: 'hover',
+                content: 'test'
+            });
+        },
+
+        /*
          * context menu is activated when user right click on a node
          */
-        contextMenu: function() {
+        contextMenu: function(target) {
 
             // When user activate the contextmenu, we update the targetNode here
             // Most of the operations apply changes to targetNode
-            $('.node').on('contextmenu', function() {
+            $(target).on('contextmenu', function() {
                 /* Update targetNode ( the one on which user is right clicking ) */
                 tree.targetNode = this;
             });
 
             var $modal = this.modal;
 
-            $('.node').contextmenu({
+            $(target).contextmenu({
 
                 parent: this,
 
@@ -347,7 +361,9 @@
                 .addClass('node-' + dept)
                 .prepend('<i class="glyphicon ' + tree.getIcon({}) + '"></i>'); // Prepend leaf glyph
 
-            plugin.contextMenu();
+            // Bind plugin event listener to newly created nodes
+            plugin.contextMenu(tree.targetNode);
+            plugin.popover(tree.targetNode);
         },
 
         remove: function($node) {
@@ -381,6 +397,7 @@
 
     var UI = {
 
+        
         export: function () {
             /*
              * Export JSON
@@ -403,6 +420,7 @@
 
         /* Listening for export command */
         UI.export();
+
 
         /* Load default JSON file */
         dataOp.import.loadJSON(tree.jsonFilePath);

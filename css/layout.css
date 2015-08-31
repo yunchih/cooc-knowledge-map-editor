@@ -27,7 +27,20 @@
 #modal-export-prompt button {
 	font-size: 16px;
 }
-
+#modal-add-comment {
+	cursor: pointer;
+	margin: auto 15px;
+	display: inline-block;
+	margin: 15px 4px;
+	font-size: 17px;
+	color: #337AB7;
+}
+#modal-add-comment > i {
+	margin-right: 5px;
+}
+#modal-textarea {
+	display: none;
+}
 #hide-preview {
 	display:none;
 }

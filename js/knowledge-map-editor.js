@@ -34,6 +34,7 @@
             this.targetNode = null;
             this.rootNode = null;
             this.html = "";
+
         },
 
 
@@ -97,7 +98,10 @@
              */
             buildNode: function _buildNode (node, dept) {
 
-                Tree.html += ('<span tabindex="0" class="editor-node node-' + dept + '" data-toggle="context"><i class="glyphicon ' + Tree.getIcon(node) + '"></i>' + node.name + '</span> ');
+                node.comment = node.comment || "";
+
+                Tree.html += (
+                    '<span tabindex="0" class="editor-node node-' + dept + '" data-toggle="context" data-content="' + node.comment + '"><i class="glyphicon ' + Tree.getIcon(node) + '"></i>' + node.name + '</span> ');
 
                 dept = dept + 1;
                 Tree.html += '<ul data-dept=' + dept + ' >';
@@ -184,9 +188,8 @@
             /*
              * Add new node into our map
              */
-            add: function(you, yourParent) {
-                
-                
+            add: function(you, yourParent, yourComment) {
+
                 var newNode = {};
                 
                 // Assign default value to the new node
@@ -201,6 +204,16 @@
                 return true;
             },
 
+            /*
+             * Add new comment to node
+             */
+            updateComment: function (you, yourComment ) {
+                // Update node comment if it's not empty
+                if( yourComment ){
+                    $(Tree.targetNode).attr('data-content',yourComment);
+                    Tree.map[you].comment = yourComment;
+                }  
+            },
             /*
              * remove node from our map
              */
@@ -219,6 +232,7 @@
              * Transform the values of data map into plain array 
              */
             transformIntoArray: function () {
+                console.log(Tree.map);
                 return $.map(Tree.map, function(value, key) {
                     // We don't need children in our JSON
                     delete value.children;
@@ -254,8 +268,8 @@
             this.contextMenu();
             this.hotkey();
             this.modal.processInput();
-            this.collapsible();
-
+            this.collapsible($('.editor-node'));
+            this.popOver($('.editor-node'));
         },
 
         /*
@@ -277,17 +291,27 @@
             var children = $(targetNode).parent('li.collapsible').find(' > ul > li');
             if ( children.is(":visible") && isClicked ) {
                 children.hide('fast');
-                $(targetNode).attr('title', '開啟').find(' > i').addClass(Tree.node_plus_icon).removeClass(Tree.node_minus_icon);
+                $(targetNode).find(' > i').addClass(Tree.node_plus_icon).removeClass(Tree.node_minus_icon);
             } else {
                 children.show('fast');
-                $(targetNode).attr('title', '關閉').find(' > i').addClass(Tree.node_minus_icon).removeClass(Tree.node_plus_icon);
+                $(targetNode).find(' > i').addClass(Tree.node_minus_icon).removeClass(Tree.node_plus_icon);
             }
+        },
+
+        /*
+         * popover shows the comment on the node.
+         */
+        popOver: function (target) {
+            $(target).popover({
+                animation: true,
+                trigger: 'hover',
+            });
         },
 
         /*
          * context menu is activated when user right click on a node
          */
-        contextMenu: function() {
+        contextMenu: function(target) {
 
             // When user activate the contextmenu, we update the targetNode here
             // Most of the operations apply changes to targetNode
@@ -336,9 +360,9 @@
             build: function(title, defaultValue) {
                 
 
-                // If a title is given, change it
-                if( title )
-                    $('#modal-title').html(title);
+                // Change the title of the modal 新增 or 修改
+                $('#modal-title').html(title);
+                $('#modal-add-comment').children('span').html(title + '註解');
 
                 $('#modal-input')
                     .val(defaultValue)
@@ -357,34 +381,68 @@
 
             },
             processInput: function() {
+
+                function processSubmission () {
+                    var you = $('#modal-input').val();
+                    var yourComment = $('#modal-textarea').val();
+
+                    if( yourComment ){
+                        $('#modal-textarea').hide();
+                        $('#modal-add-comment').show();
+                    }
+
+                    switch($('#modal-title').text()){
+                        case '新增':
+
+                            var yourParent = Node.getParentContent().text();
+
+                            // If user does not modify the default value when submitting, purge the newly created node.
+                            if (!you || you == this.newNodeDefaultValue) {
+                            // The name newly created node already exists!!!
+                                Node.remove($(Tree.targetNode).closest('li'));
+                                return false;
+                            }
+                            if( Tree.map[you] ){
+                                UI.exportWarnAgainstDuplicateName(you);
+                                return false;
+                            }
+
+                            Data.export.add( you,yourParent );
+
+                            break;
+
+                        case '修改':
+                            // The name has already existed!
+                            if( you == Node.contentCache && Tree.map[you] ){
+                                UI.exportWarnAgainstDuplicateName(you);
+                                return false;
+                            }
+                            
+
+                            Tree.map[you] = Tree.map[ Node.contentCache ];
+                            delete Tree.map[ Node.contentCache ] ;
+
+                            break;
+                    };
+
+                    Data.export.updateComment( you,yourComment );
+                    $('#modal-edit-node').modal('hide');
+                    return false;
+                }
+
                 /* Update the value of new field constantly */
                 $('#modal-input').keyup(function() {
                     var input = $('#modal-input').val();
                     Node.getContent().replaceWith(input);
                 });
 
-                $('#modal-edit-node form').submit(function () {
-                    var you = Node.getContent().text();
-                    var yourParent = Node.getParentContent().text();
-                            
-                    // If user does not modify the default value when submitting, purge the newly created node.
-                    if (!you || you == this.newNodeDefaultValue) {
-                    //      if (!$(Tree.targetNode).text() || $(Tree.targetNode).text() == this.newNodeDefaultValue) {
-                        Node.remove($(Tree.targetNode).closest('li'));
-                    // The name newly created node already exists!!!
-                    } else if( Tree.map[you] ){
-                        UI.exportWarnAgainstDuplicateName(you);
-                    }
-                    else{
-                        Data.export.add( you,yourParent );
-                        $('#modal-edit-node').modal('hide');
-                    }
-
-                    return false;
+                $('#modal-edit-node form').submit(function (e) {
+                    e.stopImmediatePropagation()
+                    e.preventDefault();
+                    return processSubmission();
                 });
                 $('#modal-submit').click(function(e) {
-                    e.preventDefault();
-                    $('#modal-edit-node form').submit();
+                    processSubmission();
                 });
 
                 $('#modal-cancel').click(function(e) {
@@ -476,7 +534,8 @@
                 .prepend('<i class="glyphicon ' + Tree.getIcon({}) + '"></i>'); // Prepend leaf glyph
 
             // Restart context menu
-            Plugin.contextMenu();
+            Plugin.contextMenu(Tree.targetNode);
+            Plugin.popOver(Tree.targetNode);
         },
 
         remove: function($node) {
@@ -500,11 +559,11 @@
         },
 
         makeCollapsible: function($node) {
-            $node.addClass('collapsible').find(' > span').attr('title', '關閉');
+            $node.addClass('collapsible');
         },
 
         makeUncollapsible: function($node) {
-            $node.has('li').removeClass('collapsible').find(' > span').attr('title', '葉節點');
+            $node.has('li').removeClass('collapsible');
         },
 
         clickListener: function () {
@@ -520,7 +579,8 @@
                 Tree.targetNode = focusingNode;
                 $(focusingNode).addClass('target-node');
             }
-        }
+        },
+
     };
 
     var UI = {
@@ -629,11 +689,7 @@
                 .append('! 請換一個名字吧~')
                 .parent()
                 .show('fast',function(){
-
                     animate($(this));
-
-                    // Rebuild a modal
-                    // plugini.modal.build('',nodeName);
                 });
         },
 
@@ -662,6 +718,15 @@
             })
         },
 
+        showCommentTextArea: function () {
+            $('#modal-edit-node')
+            .on('click', '#modal-add-comment', function () {
+                $('#modal-textarea').slideDown('fast'); 
+            })
+            // Hide the hint immediately after it's clicked
+            .hide();
+        },
+
         triggerShakeAnimation: function ($target) {
             
             $target.addClass('shake');
@@ -688,6 +753,7 @@
         UI.importDialogForm();
         UI.importDialogChooseCustom();
         UI.importWarning();
+        UI.showCommentTextArea();
         UI.showHotKey();
         UI.showPreview();
         UI.export();
