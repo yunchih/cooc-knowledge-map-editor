@@ -225,7 +225,6 @@
              * Transform the values of data map into plain array 
              */
             transformIntoArray: function () {
-                console.log(Tree.map);
                 return $.map(Tree.map, function(value, key) {
                     // We don't need children in our JSON
                     delete value.children;
