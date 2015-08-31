@@ -27,7 +27,10 @@
                 color: "",
                 type: ""
             };
-
+            this.modal_comment_edit_hint_glyph = {
+                新增: 'glyphicon-plus',
+                修改: 'glyphicon-pencil'
+            };
             /* Global variables */
             this.newNodeDefaultValue = '新增節點';
             this.map = {};
@@ -49,14 +52,14 @@
 
         addNode: function (childNodeType) {
             Node.add(childNodeType);
-            Plugin.modal.build('新增', '知識節點......');
+            Plugin.modal.build('新增', '知識節點......', '');
             $('#modal-edit-node').modal('show');
         },
 
         modifyNode: function () {
             // Cache the content so that if user hit 'Cancel', we can recover the original content
             Node.contentCache = $(Tree.targetNode).text();
-            Plugin.modal.build('修改', $(Tree.targetNode).text());
+            Plugin.modal.build('修改', $(Tree.targetNode).text(), $(Tree.targetNode).attr('data-content'));
             $('#modal-edit-node').modal('show');
         },
 
@@ -205,16 +208,6 @@
             },
 
             /*
-             * Add new comment to node
-             */
-            updateComment: function (you, yourComment ) {
-                // Update node comment if it's not empty
-                if( yourComment ){
-                    $(Tree.targetNode).attr('data-content',yourComment);
-                    Tree.map[you].comment = yourComment;
-                }  
-            },
-            /*
              * remove node from our map
              */
             remove: function _remove (you) {
@@ -357,22 +350,27 @@
 
         modal: {
 
-            build: function(title, defaultValue) {
+            build: function(title, defaultValue, defaultComment) {
                 
 
                 // Change the title of the modal 新增 or 修改
                 $('#modal-title').html(title);
-                $('#modal-add-comment').children('span').html(title + '註解');
+
+                var comment_hint = $('#modal-add-comment');
+                comment_hint.children('span').html(title + '註解');
+                comment_hint.children('i')
+                            .removeClass()
+                            .addClass('glyphicon ' + Tree.modal_comment_edit_hint_glyph[title]);
 
                 $('#modal-input')
                     .val(defaultValue)
                     .on('click', function() {
-
                         $(this).select();
-
-                        // Hide the duplicate warning ( if any )
-                        $('#duplicate-node').hide('fast');
-
+                    });
+                $('#modal-textarea')
+                    .val(defaultComment)
+                    .on('click', function() {
+                        $(this).select();
                     });
 
                 $('#modal-edit-node').on('show.bs.modal', function (e) {
@@ -388,7 +386,6 @@
 
                     if( yourComment ){
                         $('#modal-textarea').hide();
-                        $('#modal-add-comment').show();
                     }
 
                     switch($('#modal-title').text()){
@@ -412,20 +409,27 @@
                             break;
 
                         case '修改':
-                            // The name has already existed!
-                            if( you == Node.contentCache && Tree.map[you] ){
-                                UI.exportWarnAgainstDuplicateName(you);
-                                return false;
-                            }
                             
-
-                            Tree.map[you] = Tree.map[ Node.contentCache ];
-                            delete Tree.map[ Node.contentCache ] ;
-
-                            break;
+                            if( you != Node.contentCache ){
+                                if( Tree.map[you] ){
+                                    // The name has already existed!
+                                    UI.exportWarnAgainstDuplicateName(you);
+                                    return false;
+                                }
+                                else{
+                                    Tree.map[you] = Tree.map[ Node.contentCache ];
+                                    delete Tree.map[ Node.contentCache ] ;
+                                }
+                            }
                     };
 
-                    Data.export.updateComment( you,yourComment );
+                    // Update node comment if it's not empty
+                    if( yourComment ){
+                        $(Tree.targetNode).attr('data-content',yourComment);
+                        Tree.map[you].comment = yourComment;
+                    } 
+
+                    // Close the edit modal
                     $('#modal-edit-node').modal('hide');
                     return false;
                 }
@@ -721,10 +725,8 @@
         showCommentTextArea: function () {
             $('#modal-edit-node')
             .on('click', '#modal-add-comment', function () {
-                $('#modal-textarea').slideDown('fast'); 
-            })
-            // Hide the hint immediately after it's clicked
-            .hide();
+                $('#modal-textarea').slideToggle('fast'); 
+            });
         },
 
         triggerShakeAnimation: function ($target) {
