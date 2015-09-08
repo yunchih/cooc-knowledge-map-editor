@@ -27,17 +27,34 @@
 #modal-export-prompt button {
 	font-size: 16px;
 }
-#knowledge-map > .close {
-	position: absolute;
-	top: 80px;
-	right: 100px;
+#modal-add-comment {
+	cursor: pointer;
+	margin: auto 15px;
+	display: inline-block;
+	margin: 15px 4px;
+	font-size: 17px;
+	color: #337AB7;
 }
-#editor-navbar {
-	z-index: 2;
+#modal-add-comment > i {
+	margin-right: 5px;
 }
-#knowledge-map {
-	z-index: 1;
+#modal-textarea {
+	display: none;
 }
 #hide-preview {
 	display:none;
+}
+
+#options-list {
+	text-align: center;
+	margin: 10px auto;
+
+}
+
+#options-list > div{
+	z-index: 2;
+}
+
+#knowledge-map {
+	z-index: 1;
 }

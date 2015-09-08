@@ -1,6 +1,6 @@
 (function() {
 
-    var tree = {
+    var Tree = {
 
         init: function() {
             /* Configurations */
@@ -27,13 +27,17 @@
                 color: "",
                 type: ""
             };
-
+            this.modal_comment_edit_hint_glyph = {
+                新增: 'glyphicon-plus',
+                修改: 'glyphicon-pencil'
+            };
             /* Global variables */
             this.newNodeDefaultValue = '新增節點';
             this.map = {};
             this.targetNode = null;
             this.rootNode = null;
             this.html = "";
+
         },
 
 
@@ -47,47 +51,48 @@
         },
 
         addNode: function (childNodeType) {
-            nodeOp.add(childNodeType);
-            plugin.modal.build('新增', '知識節點......');
+            Node.add(childNodeType);
+            Plugin.modal.build('新增', '知識節點......', '');
             $('#modal-edit-node').modal('show');
         },
 
         modifyNode: function () {
             // Cache the content so that if user hit 'Cancel', we can recover the original content
-            nodeOp.contentCache = $(tree.targetNode).text();
-            plugin.modal.build('修改', $(tree.targetNode).text());
+            Node.contentCache = $(Tree.targetNode).text();
+            Plugin.modal.build('修改', $(Tree.targetNode).text(), $(Tree.targetNode).attr('data-content'));
             $('#modal-edit-node').modal('show');
         },
 
         deleteNode: function () {
             // remove the node from tree
-            nodeOp.remove($(tree.targetNode).parent());
+            Node.remove($(Tree.targetNode).parent());
 
+            console.log("Removing: ",Node.getContent().text());
             // remove the node from our data ( which will be exported )
-            dataOp.export.remove(nodeOp.getContent().text())
+            Data.export.remove(Node.getContent().text())
         },
 
         goParentNode: function () {
-            nodeOp.changeFocusingNode( $(tree.targetNode).closest('ul').siblings('.editor-node') );
+            Node.changeFocusingNode( $(Tree.targetNode).closest('ul').siblings('.editor-node') );
         },
         goChildNode: function () {
-            plugin.toggleCollapsible(tree.targetNode);
-            nodeOp.changeFocusingNode( $(tree.targetNode).siblings('ul').find('.editor-node:first') );
+            Plugin.toggleCollapsible(Tree.targetNode);
+            Node.changeFocusingNode( $(Tree.targetNode).siblings('ul').find('.editor-node:first') );
         },
         goLastSibling: function () {
-            nodeOp.changeFocusingNode( $(tree.targetNode).closest('li').prev().children('.editor-node') );
+            Node.changeFocusingNode( $(Tree.targetNode).closest('li').prev().children('.editor-node') );
         },
         goNextSibling: function () {
-            nodeOp.changeFocusingNode( $(tree.targetNode).closest('li').next().children('.editor-node') );
+            Node.changeFocusingNode( $(Tree.targetNode).closest('li').next().children('.editor-node') );
         }
     };
 
-    var dataOp = {
+    var Data = {
 
         init: function(data) {
-            tree.html = "";
-            tree.rootNode = this.import.buildTree(data);
-            this.import.buildHTML(tree.rootNode);
+            Tree.html = "";
+            Tree.rootNode = this.import.buildTree(data);
+            this.import.buildHTML(Tree.rootNode);
         },
 
         import: {
@@ -95,22 +100,25 @@
             /*
              * Recursively tranverse the children array of each node and turn them into HTML
              */
-            buildNode: function _buildNode(node, dept) {
+            buildNode: function _buildNode (node, dept) {
 
-                tree.html += ('<span tabindex="0" class="editor-node node-' + dept + '" data-toggle="context"><i class="glyphicon ' + tree.getIcon(node) + '"></i>' + node.name + '</span> ');
+                node.comment = node.comment || "";
+
+                Tree.html += (
+                    '<span tabindex="0" class="editor-node node-' + dept + '" data-toggle="context" data-content="' + node.comment + '"><i class="glyphicon ' + Tree.getIcon(node) + '"></i>' + node.name + '</span> ');
 
                 dept = dept + 1;
-                tree.html += '<ul data-dept=' + dept + ' >';
+                Tree.html += '<ul data-dept="' + dept + '">';
 
                 if (node.children) {
-                    $.each(node.children, function(index, child) {
-                        tree.html += '<li>';
-                        _buildNode(tree.map[child], dept);
-                        tree.html += '</li>';
+                    $.each(node.children, function (index, child) {
+                        Tree.html += '<li>';
+                        _buildNode( child, dept);
+                        Tree.html += '</li>';
                     });
                 }
 
-                tree.html += '</ul>';
+                Tree.html += '</ul>';
 
             },
 
@@ -120,23 +128,23 @@
 
                 // Transform the input data into a map, whose key is the name of the node 
                 $.each(data, function(key, node) {
-                    tree.map[node.name] = node;
+                    Tree.map[node.name] = node;
                 });
 
                 // Build `children` array for each node
                 $.each(data, function(index, node) {
 
-                    var parentNode = tree.map[node.parent];
+                    var parentNode = Tree.map[node.parent];
 
                     if (parentNode) {
 
                         // If parentNode still doesn't have children, initialize it as empty array and push in a new one.
-                        (parentNode.children || (parentNode.children = [])).push(node.name);
+                        (parentNode.children || (parentNode.children = [])).push(node);
 
                     } else {
                         // If a node does not have parent, it is the root.
                         node.root = true;
-                        rootNode = node.name;
+                        rootNode = node;
                     }
                 });
 
@@ -146,12 +154,12 @@
 
             buildHTML: function(rootNode) {
 
-                tree.html += "<ul><li>";
-                this.buildNode(tree.map[rootNode], 0);
-                tree.html += "</li></ul>";
+                Tree.html += "<ul><li>";
+                this.buildNode(rootNode, 0);
+                Tree.html += "</li></ul>";
 
                 // Apply the collected HTML into our page
-                $(".tree").append(tree.html);
+                $(".tree").append(Tree.html);
 
             },
 
@@ -161,13 +169,13 @@
                 $.getJSON(jsonFilePath, function(data) {
 
                     // Before transforming our data, we shall initialize the necessary utililies
-                    dataOp.init(data);
+                    Data.init(data);
 
                     // Initialize context menu and other plugins.
-                    plugin.init();
+                    Plugin.init();
 
                     // Start listening for click event on nodes.
-                    nodeOp.clickListener();
+                    Node.clickListener();
 
                     $('#modal-JSON-import').modal('hide');
 
@@ -184,19 +192,18 @@
             /*
              * Add new node into our map
              */
-            add: function(you, yourParent) {
-                
-                
+            add: function(you, yourParent, yourComment) {
+
                 var newNode = {};
                 
                 // Assign default value to the new node
-                $.extend(newNode, tree.jsonModelDefault);
+                $.extend(newNode, Tree.jsonModelDefault);
 
                 newNode.name = you;
                 newNode.parent = yourParent;
 
                 // Add it into our map ( which will be exported )
-                tree.map[you] = newNode;
+                Tree.map[you] = newNode;
                 
                 return true;
             },
@@ -205,22 +212,23 @@
              * remove node from our map
              */
             remove: function _remove (you) {
-
-                if( you && tree.map[ you ].children ){
+                console.log("Removing Node: ", you);
+                if( you && Tree.map[ you ].children ){
                     // Recursively remove your children
-                    $.each(tree.map[ you ].children, function(index, child) {
-                            _remove(child);
+                    $.each(Tree.map[ you ].children, function(index, child) {
+                            _remove(child.name);
                     });
                 }
-                delete tree.map[you];
+
+                delete Tree.map[you];
             },
 
             /*
              * Transform the values of data map into plain array 
              */
             transformIntoArray: function () {
-                return $.map(tree.map, function(value, key) {
-                    // We don't we children in our JSON
+                return $.map(Tree.map, function(value, key) {
+                    // We don't need children in our JSON
                     delete value.children;
                     return [value];
                 });
@@ -239,7 +247,7 @@
         },
 
         cleanUp: function () {
-            tree.map = {}; 
+            Tree.map = {}; 
 
             // Clean the HTML
             $(".tree").html("");
@@ -248,14 +256,14 @@
     };
 
 
-    var plugin = {
+    var Plugin = {
 
         init: function() {
             this.contextMenu();
             this.hotkey();
             this.modal.processInput();
-            this.collapsible();
-
+            this.collapsible($('.editor-node'));
+            this.popOver($('.editor-node'));
         },
 
         /*
@@ -264,7 +272,7 @@
          */
         collapsible: function() {
 
-            nodeOp.makeCollapsible($('.tree li').has('li'));
+            Node.makeCollapsible($('.tree li').has('li'));
 
             var toggle = this.toggleCollapsible;
             $('.tree').on('click', ' li.collapsible > span', function(e) {
@@ -275,26 +283,35 @@
 
         toggleCollapsible: function (targetNode ,isClicked) {
             var children = $(targetNode).parent('li.collapsible').find(' > ul > li');
-            console.log("Toggle");
             if ( children.is(":visible") && isClicked ) {
                 children.hide('fast');
-                $(targetNode).attr('title', '開啟').find(' > i').addClass(tree.node_plus_icon).removeClass(tree.node_minus_icon);
+                $(targetNode).find(' > i').addClass(Tree.node_plus_icon).removeClass(Tree.node_minus_icon);
             } else {
                 children.show('fast');
-                $(targetNode).attr('title', '關閉').find(' > i').addClass(tree.node_minus_icon).removeClass(tree.node_plus_icon);
+                $(targetNode).find(' > i').addClass(Tree.node_minus_icon).removeClass(Tree.node_plus_icon);
             }
+        },
+
+        /*
+         * popover shows the comment on the node.
+         */
+        popOver: function (target) {
+            $(target).popover({
+                animation: true,
+                trigger: 'hover',
+            });
         },
 
         /*
          * context menu is activated when user right click on a node
          */
-        contextMenu: function() {
+        contextMenu: function(target) {
 
             // When user activate the contextmenu, we update the targetNode here
             // Most of the operations apply changes to targetNode
             $('.editor-node').on('contextmenu', function() {
                 /* Update targetNode ( the one on which user is right clicking ) */
-                tree.targetNode = this;
+                Tree.targetNode = this;
             });
 
             // Bind the modal object into a local variable, 
@@ -317,16 +334,16 @@
 
                     switch(operation) {
                         case "delete-node":
-                            tree.deleteNode();
+                            Tree.deleteNode();
                             break;
                         case "add-child-node":
-                            tree.addNode('child');
+                            Tree.addNode('child');
                             break;
                         case "add-sibling-node":
-                            tree.addNode('sibling');
+                            Tree.addNode('sibling');
                             break;
                         default:
-                            tree.modifyNode();
+                            Tree.modifyNode();
                     }
                 }
             })
@@ -334,22 +351,27 @@
 
         modal: {
 
-            build: function(title, defaultValue) {
+            build: function(title, defaultValue, defaultComment) {
                 
 
-                // If a title is given, change it
-                if( title )
-                    $('#modal-title').html(title);
+                // Change the title of the modal 新增 or 修改
+                $('#modal-title').html(title);
+
+                var comment_hint = $('#modal-add-comment');
+                comment_hint.children('span').html(title + '註解');
+                comment_hint.children('i')
+                            .removeClass()
+                            .addClass('glyphicon ' + Tree.modal_comment_edit_hint_glyph[title]);
 
                 $('#modal-input')
                     .val(defaultValue)
                     .on('click', function() {
-
                         $(this).select();
-
-                        // Hide the duplicate warning ( if any )
-                        $('#duplicate-node').hide('fast');
-
+                    });
+                $('#modal-textarea')
+                    .val(defaultComment)
+                    .on('click', function() {
+                        $(this).select();
                     });
 
                 $('#modal-edit-node').on('show.bs.modal', function (e) {
@@ -358,34 +380,74 @@
 
             },
             processInput: function() {
+
+                function processSubmission () {
+                    var you = $('#modal-input').val();
+                    var yourComment = $('#modal-textarea').val();
+
+                    if( yourComment ){
+                        $('#modal-textarea').hide();
+                    }
+
+                    switch($('#modal-title').text()){
+                        case '新增':
+
+                            var yourParent = Node.getParentContent().text();
+
+                            // If user does not modify the default value when submitting, purge the newly created node.
+                            if (!you || you == this.newNodeDefaultValue) {
+                            // The name newly created node already exists!!!
+                                Node.remove($(Tree.targetNode).closest('li'));
+                                return false;
+                            }
+                            if( Tree.map[you] ){
+                                UI.exportWarnAgainstDuplicateName(you);
+                                return false;
+                            }
+
+                            Data.export.add( you,yourParent );
+
+                            break;
+
+                        case '修改':
+                            
+                            if( you != Node.contentCache ){
+                                if( Tree.map[you] ){
+                                    // The name has already existed!
+                                    UI.exportWarnAgainstDuplicateName(you);
+                                    return false;
+                                }
+                                else{
+                                    Tree.map[you] = Tree.map[ Node.contentCache ];
+                                    delete Tree.map[ Node.contentCache ] ;
+                                }
+                            }
+                    };
+
+                    // Update node comment if it's not empty
+                    if( yourComment ){
+                        $(Tree.targetNode).attr('data-content',yourComment);
+                        Tree.map[you].comment = yourComment;
+                    } 
+
+                    // Close the edit modal
+                    $('#modal-edit-node').modal('hide');
+                    return false;
+                }
+
                 /* Update the value of new field constantly */
                 $('#modal-input').keyup(function() {
                     var input = $('#modal-input').val();
-                    nodeOp.getContent().replaceWith(input);
+                    Node.getContent().replaceWith(input);
                 });
 
-                $('#modal-edit-node form').submit(function () {
-                    var you = nodeOp.getContent().text();
-                    var yourParent = nodeOp.getParentContent().text();
-                            
-                    // If user does not modify the default value when submitting, purge the newly created node.
-                    if (!you || you == this.newNodeDefaultValue) {
-                    //      if (!$(tree.targetNode).text() || $(tree.targetNode).text() == this.newNodeDefaultValue) {
-                        nodeOp.remove($(tree.targetNode).closest('li'));
-                    // The name newly created node already exists!!!
-                    } else if( tree.map[you] ){
-                        UI.exportWarnAgainstDuplicateName(you);
-                    }
-                    else{
-                        dataOp.export.add( you,yourParent );
-                        $('#modal-edit-node').modal('hide');
-                    }
-
-                    return false;
+                $('#modal-edit-node form').submit(function (e) {
+                    e.stopImmediatePropagation()
+                    e.preventDefault();
+                    return processSubmission();
                 });
                 $('#modal-submit').click(function(e) {
-                    e.preventDefault();
-                    $('#modal-edit-node form').submit();
+                    processSubmission();
                 });
 
                 $('#modal-cancel').click(function(e) {
@@ -394,14 +456,14 @@
 
                     // If there is content cache, the user is giving up an edit.  
                     // So we recover the content of node he is editing.
-                    if( nodeOp.contentCache ){
-                        nodeOp.getContent().replaceWith(nodeOp.contentCache);
-                        nodeOp.contentCache = "";
+                    if( Node.contentCache ){
+                        Node.getContent().replaceWith(Node.contentCache);
+                        Node.contentCache = "";
                     }
                     // The user is giving up creating a new node,
                     // so we simply remove the newly created node.
                     else{
-                        nodeOp.remove($(tree.targetNode).closest('li'));
+                        Node.remove($(Tree.targetNode).closest('li'));
                     }
                 });
             }
@@ -409,45 +471,45 @@
 
         hotkey: function () {
 
-            $('.tree').on('keydown', '.editor-node', tree.hotkey.addChildNode, function(event){
+            $('.tree').on('keydown','.editor-node', Tree.hotkey.addChildNode, function(event){
                 event.preventDefault();
-                tree.addNode('child');
-            }).on('keydown', '.editor-node', tree.hotkey.addSiblingNode, function(event){
+                Tree.addNode('child');
+            }).on('keydown','.editor-node', Tree.hotkey.addSiblingNode, function(event){
                 event.preventDefault();
-                tree.addNode('sibling');
-            }).on('keydown', '.editor-node', tree.hotkey.modifyNode, function(event){
+                Tree.addNode('sibling');
+            }).on('keydown','.editor-node', Tree.hotkey.modifyNode, function(event){
                 event.preventDefault();
-                tree.modifyNode();
-            }).on('keydown', '.editor-node', tree.hotkey.deleteNode, function(event){
+                Tree.modifyNode();
+            }).on('keydown','.editor-node', Tree.hotkey.deleteNode, function(event){
                 event.preventDefault();
-                tree.deleteNode();
-            }).on('keydown', '.editor-node', tree.hotkey.goParentNode, function(event){
+                Tree.deleteNode();
+            }).on('keydown','.editor-node', Tree.hotkey.goParentNode, function(event){
                 event.preventDefault();
-                tree.goParentNode();
-            }).on('keydown', '.editor-node', tree.hotkey.goChildNode, function(event){
+                Tree.goParentNode();
+            }).on('keydown','.editor-node', Tree.hotkey.goChildNode, function(event){
                 event.preventDefault();
-                tree.goChildNode();
-            }).on('keydown', '.editor-node', tree.hotkey.goNextSibling, function(event){
+                Tree.goChildNode();
+            }).on('keydown','.editor-node', Tree.hotkey.goNextSibling, function(event){
                 event.preventDefault();
-                tree.goNextSibling();
-            }).on('keydown', '.editor-node', tree.hotkey.goLastSibling, function(event){
+                Tree.goNextSibling();
+            }).on('keydown','.editor-node', Tree.hotkey.goLastSibling, function(event){
                 event.preventDefault();
-                tree.goLastSibling();
+                Tree.goLastSibling();
             });
         }
     };
 
-    var nodeOp = {
+    var Node = {
 
         init: function() {
-            this.newNodeTemplate = "<li><span tabindex='0' class='editor-node' data-toggle='context' >" + tree.newNodeDefaultValue + "</span><ul></ul></li> ";
+            this.newNodeTemplate = "<li><span tabindex='0' class='editor-node' data-toggle='context' >" + Tree.newNodeDefaultValue + "</span><ul></ul></li> ";
             this.contentCache = "";
         },
 
         // targetType could be "child" or "sibling", all relative to the current selected node.
         add: function(targetType) {
              // Get current dept
-            var dept = $(tree.targetNode).siblings('ul').attr('data-dept');
+            var dept = $(Tree.targetNode).siblings('ul').attr('data-dept');
             var newParentNode;
 
             // Adding a child node
@@ -456,28 +518,29 @@
                 this.removeLeafIcon();
 
                 // Make the parent collapsible
-                this.makeCollapsible($(tree.targetNode).parent('li'));
+                this.makeCollapsible($(Tree.targetNode).parent('li'));
 
-                newParentNode = $(tree.targetNode).siblings('ul')
+                newParentNode = $(Tree.targetNode).siblings('ul')
             }   
             // Adding a sibling node
             else{
-                newParentNode = $(tree.targetNode).closest('ul');
+                newParentNode = $(Tree.targetNode).closest('ul');
             }
 
             // Append to target ul and change the focus
             this.changeFocusingNode( $(this.newNodeTemplate).appendTo(newParentNode).children('.editor-node') );
 
             // Set next dept
-            $(tree.targetNode).siblings('ul').attr('data-dept', parseInt(dept) + 1);
+            $(Tree.targetNode).siblings('ul').attr('data-dept', parseInt(dept) + 1);
 
             // Add icon
-            tree.targetNode
+            Tree.targetNode
                 .addClass('node-' + dept)
-                .prepend('<i class="glyphicon ' + tree.getIcon({}) + '"></i>'); // Prepend leaf glyph
+                .prepend('<i class="glyphicon ' + Tree.getIcon({}) + '"></i>'); // Prepend leaf glyph
 
             // Restart context menu
-            plugin.contextMenu();
+            Plugin.contextMenu(Tree.targetNode);
+            Plugin.popOver(Tree.targetNode);
         },
 
         remove: function($node) {
@@ -489,23 +552,23 @@
         },
 
         getContent: function() {
-            return $(tree.targetNode).contents().last();
+            return $(Tree.targetNode).contents().last();
         },
 
         getParentContent: function() {
-            return $(tree.targetNode).closest('ul').siblings('.editor-node').contents().last();
+            return $(Tree.targetNode).closest('ul').siblings('.editor-node').contents().last();
         },
 
         removeLeafIcon: function() {
-            $(tree.targetNode).children("." + tree.node_leaf_icon).removeClass(tree.node_leaf_icon).addClass(tree.node_minus_icon);
+            $(Tree.targetNode).children("." + Tree.node_leaf_icon).removeClass(Tree.node_leaf_icon).addClass(Tree.node_minus_icon);
         },
 
         makeCollapsible: function($node) {
-            $node.addClass('collapsible').find(' > span').attr('title', '關閉');
+            $node.addClass('collapsible');
         },
 
         makeUncollapsible: function($node) {
-            $node.has('li').removeClass('collapsible').find(' > span').attr('title', '葉節點');
+            $node.has('li').removeClass('collapsible');
         },
 
         clickListener: function () {
@@ -516,14 +579,13 @@
         },
 
         changeFocusingNode: function (focusingNode) {
-            console.log("Change Focus");
             if( $(focusingNode).length ){
-                console.log($(focusingNode));
-                $(tree.targetNode).removeClass('target-node');
-                tree.targetNode = focusingNode;
+                $(Tree.targetNode).removeClass('target-node');
+                Tree.targetNode = focusingNode;
                 $(focusingNode).addClass('target-node');
             }
-        }
+        },
+
     };
 
     var UI = {
@@ -538,7 +600,7 @@
 
                 // If there is unexported data, prompt 
                 // user to export them first.
-                if( ! $.isEmptyObject(tree.map) ){
+                if( ! $.isEmptyObject(Tree.map) ){
                     $("#modal-export-prompt").modal('show');
                 }
                 else{
@@ -558,7 +620,7 @@
                 e.preventDefault();
 
                 // Clean our map immediately ( the user choose not to preserve it. )
-                dataOp.cleanUp();
+                Data.cleanUp();
 
                 $('#modal-export-prompt').on('hidden.bs.modal', function (e) {
                   $('#import').trigger('click');
@@ -572,7 +634,7 @@
                 $('#export').trigger('click');
 
                 // Clean our map when export is done 
-                setTimeout(dataOp.cleanUp,1);
+                setTimeout(Data.cleanUp,1);
             })
         },
         
@@ -582,7 +644,7 @@
              */
             $( "#form-load-custom > .btn" ).on( "click" , function(e) {
                 e.preventDefault();
-                dataOp.import.loadJSON($("#form-load-custom > input").val());
+                Data.import.loadJSON($("#form-load-custom > input").val());
             });
         },
 
@@ -591,7 +653,7 @@
              * Load default JSON file
              */
             $( "#load-blank" ).on( "click", function() {
-                dataOp.import.loadJSON(tree.blankJSONFilePath);
+                Data.import.loadJSON(Tree.blankJSONFilePath);
             });
              /*
               * Show input field when user choose to import custom JSON
@@ -605,7 +667,7 @@
              * Load default JSON file
              */
             $( "#load-default" ).on( "click", function() {
-                dataOp.import.loadJSON(tree.defaultJSONFilePath);
+                Data.import.loadJSON(Tree.defaultJSONFilePath);
             });
 
         },
@@ -615,7 +677,7 @@
              * Export JSON
              */
             $('#export').on('click', function() {
-                dataOp.export.prepareJSON();
+                Data.export.prepareJSON();
                 $('#modal-JSON-export').modal('show');
             });
         },
@@ -632,27 +694,24 @@
                 .append('! 請換一個名字吧~')
                 .parent()
                 .show('fast',function(){
-
                     animate($(this));
-
-                    // Rebuild a modal
-                    // plugini.modal.build('',nodeName);
                 });
         },
 
-        showHotKey: function () {
-            $('#show-hotkey').click(function () {
-                $('#hotkeys').fadeIn('fast');
+        showDocumentation: function () {
+            $('#show-doc').click(function () {
+                $('#docs').fadeIn('fast');
             });
-            $('#hide-hotkey').click(function () {
-                $('#hotkeys').fadeOut('fast');
+            $('#hide-doc').click(function () {
+                $('#docs').fadeOut('fast');
             });
         },
 
         showPreview: function () {
 
             $('#show-preview').click(function () {
-                createPreview( dataOp.export.transformIntoArray() );
+                var clonedRoot = $.extend(true, {}, Tree.rootNode );
+                createPreview( clonedRoot );
                 $('#knowledge-map').fadeIn('fast');
                 $('#hide-preview').fadeIn('fast');
                 $(this).fadeOut('fast');
@@ -662,6 +721,13 @@
                 $('#knowledge-map').fadeOut('fast');
                 $(this).fadeOut('fast');
             })
+        },
+
+        showCommentTextArea: function () {
+            $('#modal-edit-node')
+            .on('click', '#modal-add-comment', function () {
+                $('#modal-textarea').slideToggle('fast'); 
+            });
         },
 
         triggerShakeAnimation: function ($target) {
@@ -680,20 +746,22 @@
     $(function() {
         
         /* Initializing global configurations */
-        tree.init();
+        Tree.init();
 
         /* Initializing node operations */
-        nodeOp.init();
+        Node.init();
 
         /* ----------  UI  ---------- */
         UI.importDialogTrigger();
         UI.importDialogForm();
         UI.importDialogChooseCustom();
         UI.importWarning();
-        UI.showHotKey();
+        UI.showCommentTextArea();
+        UI.showDocumentation();
         UI.showPreview();
         UI.export();
 
+        /* Trigger import prompt automatically at startup */
         $('#import').trigger('click');
     });
 

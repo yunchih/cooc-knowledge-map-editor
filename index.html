@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="css/preview.css">
     </head>
     <body>
+ 
         <!--                                  -->
         <!--    Mundane UI: Context menu      -->
         <!--                                  -->
@@ -37,6 +38,8 @@
               <div class="modal-body">
                 <form  onsubmit="return false">
                     <input class="form-control input-lg" type="text" id="modal-input" class="input-lg">
+                    <span id="modal-add-comment"><i class="glyphicon" aria-hidden="true"></i><span></span></span>
+                    <textarea id="modal-textarea" class="form-control" rows="3"></textarea>
                 </form>
                 <div class="alert alert-danger" role="alert" id="duplicate-node">
                   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -74,47 +77,31 @@
         </div>
 
         <!--                                  -->
-        <!-- Optional UI: Top navigation bar  -->
+        <!--     Mundane UI: Options list     -->
         <!--                                  -->
-        <nav class="navbar navbar-inverse" id="editor-navbar"  >
-          <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-              <a class="navbar-brand" href="#">酷課學習知識地圖編輯器</a>
+        
+          <section class="container" id="options-list">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-primary" id="show-doc">使用秘訣</button>
+              <button type="button" class="btn btn-primary" id="show-preview">預覽知識地圖</button>
+              <button type="button" class="btn btn-success" id="hide-preview">繼續編輯</button>
+              <button type="button" class="btn btn-primary" id="import" data-toggle="modal" >新增知識地圖</button>
+              <button type="button" class="btn btn-primary" id="export" data-toggle="modal" >輸出 JSON</button>
             </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" >
-              <ul class="nav navbar-nav navbar-right">
-                <li>
-                  <button type="button" class="btn btn-success nav-button btn-lg" id="hide-preview">繼續編輯</button>
-                </li>
-                <li>
-                  <button type="button" class="btn btn-primary nav-button" id="show-hotkey">快捷鍵</button>
-                </li>
-                <li>
-                  <button type="button" class="btn btn-primary nav-button" id="show-preview">預覽知識地圖</button>
-                </li>
-                <li>
-                  <button type="button" class="btn btn-primary nav-button" id="import" data-toggle="modal" >新增知識地圖</button>
-                </li>
-                <li>
-                  <button type="button" class="btn btn-primary nav-button" id="export" data-toggle="modal" >輸出 JSON</button>
-                </li>
-              </ul>
-            </div><!-- /.navbar-collapse -->
-          </div><!-- /.container-fluid -->
-        </nav>
+          </section>
+           
         
         <!--                                  -->
         <!--      Main body of the editor     -->
         <!--                                  -->
         <section class="container">
-			       <h1 style="text-align:center">編輯請按右鍵</h1>
             <div class="tree"></div>
         </section>
-        <div class="overlay" id="knowledge-map">
-        </div>
+
+        <!--                                    -->
+        <!-- Mundane UI: Knowledge Map preview  -->
+        <!--                                    -->
+        <div class="overlay" id="knowledge-map"></div>
         
         <!--                                  -->
         <!--  Optional UI: JSON export modal  -->
@@ -193,32 +180,56 @@
             </div>
           </div>
         </div>
-          <div class="overlay" id="hotkeys">
-            <section >
-              <ul >
-                <li >新增子節點: <kbd>c</kbd></li>
-                <li >新增鄰節點: <kbd>v</kbd></li>
-                <li >修改節點: <kbd>Enter</kbd></li>
-                <li >刪除節點: <kbd>Delete</kbd></li>
-                <li >前往母節點: <kbd>←</kbd></li>
-                <li >前往子節點: <kbd>→</kbd></li>
-                <li >前往上個節點: <kbd>↑</kbd></li>
-                <li >前往下個節點: <kbd>↓</kbd></li>
-                <li><button type="button" class="btn btn-default btn-lg btn-block" id="hide-hotkey">知道了</button>   </li>
-              </ul> 
+
+        <!--                                         -->
+        <!--    Optional UI: doc instructions     -->
+        <!--                                         -->        
+        <div class="overlay" id="docs">
+          <div id="body">
+            <section class="section">
+                <h1 class="title">秘訣</h1>
+                <p id="trick">
+                  在知識節點上按右鍵，就可以讓您新增、修改、刪除、移動節點。另外，您也可以使用下面提供的快捷鍵。
+                </p>
+            </section>
+            <section class="section">
+                <h1 class="title">快捷鍵</h1>
+                <div class="hotkey-group" id="node-operation">
+                  <h1 class="hotkey-title">節點操作</h1>
+                  <span class="hotkey-text">新增子節點: </span><span class="hotkey-key"><kbd>c</kbd></span>
+                  <span class="hotkey-text">新增鄰節點: </span><span class="hotkey-key"><kbd>v</kbd></span>
+                  <span class="hotkey-text">修改節點: </span><span class="hotkey-key"><kbd>Enter</kbd></span>
+                  <span class="hotkey-text">刪除節點: </span><span class="hotkey-key"><kbd>Delete</kbd></span>
+                </div>
+                
+                <div class="hotkey-group" id="navigation">
+                  <h1 class="hotkey-title">節點移動</h1>
+                  <span class="hotkey-text">前往母節點: </span><span class="hotkey-key"><kbd>←</kbd></span>
+                  <span class="hotkey-text">前往子節點: </span><span class="hotkey-key"><kbd>→</kbd></span>
+                  <span class="hotkey-text">前往上個節點: </span><span class="hotkey-key"><kbd>↑</kbd></span>
+                  <span class="hotkey-text">前往下個節點: </span><span class="hotkey-key"><kbd>↓</kbd></span>            
+                </div>
             </section>
           </div>
+            
+          <button type="button" class="btn btn-default btn-lg btn-block" id="hide-doc">知道了</button>
+        </div>
         
 
         
-          
-        <!-- jQuery library -->
+        <!-- general dependencies -->  
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-        <script src="js/contextmenu.js" ></script>   
-        <script src="js/jquery.hotkeys.js" ></script>   
+
+        <!-- knowledge map dependencies -->
+        <script src="js/vendor/contextmenu.js" ></script>   
+        <script src="js/vendor/jquery.docs.js" ></script>   
+
+        <!-- knowledge map -->
         <script src="js/knowledge-map-editor.js" ></script>   
-        <script src="js/d3.min.js" ></script> 
+
+        <!-- knowledge map preview  -->
+        <script src="js/vendor/d3.min.js" ></script> 
         <script src="js/d3-knowledge-map.js" ></script> 
         
     </body>
