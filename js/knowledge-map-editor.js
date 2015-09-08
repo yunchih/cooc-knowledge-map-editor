@@ -67,6 +67,7 @@
             // remove the node from tree
             Node.remove($(Tree.targetNode).parent());
 
+            console.log("Removing: ",Node.getContent().text());
             // remove the node from our data ( which will be exported )
             Data.export.remove(Node.getContent().text())
         },
@@ -107,7 +108,7 @@
                     '<span tabindex="0" class="editor-node node-' + dept + '" data-toggle="context" data-content="' + node.comment + '"><i class="glyphicon ' + Tree.getIcon(node) + '"></i>' + node.name + '</span> ');
 
                 dept = dept + 1;
-                Tree.html += '<ul data-dept=' + dept + ' >';
+                Tree.html += '<ul data-dept="' + dept + '">';
 
                 if (node.children) {
                     $.each(node.children, function (index, child) {
@@ -211,13 +212,14 @@
              * remove node from our map
              */
             remove: function _remove (you) {
-
+                console.log("Removing Node: ", you);
                 if( you && Tree.map[ you ].children ){
                     // Recursively remove your children
                     $.each(Tree.map[ you ].children, function(index, child) {
-                            _remove(child);
+                            _remove(child.name);
                     });
                 }
+
                 delete Tree.map[you];
             },
 
