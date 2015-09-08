@@ -698,12 +698,12 @@
                 });
         },
 
-        showHotKey: function () {
-            $('#show-hotkey').click(function () {
-                $('#hotkeys').fadeIn('fast');
+        showDocumentation: function () {
+            $('#show-doc').click(function () {
+                $('#docs').fadeIn('fast');
             });
-            $('#hide-hotkey').click(function () {
-                $('#hotkeys').fadeOut('fast');
+            $('#hide-doc').click(function () {
+                $('#docs').fadeOut('fast');
             });
         },
 
@@ -757,7 +757,7 @@
         UI.importDialogChooseCustom();
         UI.importWarning();
         UI.showCommentTextArea();
-        UI.showHotKey();
+        UI.showDocumentation();
         UI.showPreview();
         UI.export();
 

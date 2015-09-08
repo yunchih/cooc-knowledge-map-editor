@@ -97,18 +97,83 @@
     
 }
 
-#hotkeys section {
-    width: 30%;
-    margin: 100px auto;
+#docs > #body {
+    margin-top: 50px;
 }
-#hotkeys li {
-    list-style-type:none;
-    width: 50%;
+#docs .section {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap;
+    width: 640px;
     margin: 30px auto;
+    border: 1px solid rgba(0,0,0,0.15);
+    margin-top: 20px;
+    -webkit-box-shadow: 0px 2px 2px 2px rgba(0,0,0,0.34);
+    -moz-box-shadow: 0px 2px 2px 2px rgba(0,0,0,0.34);
+    box-shadow: 0px 2px 2px 2px rgba(0,0,0,0.34);
+}
+
+#docs {
     font-size: 22px;
 }
+#trick {
+    margin: 25px 50px;
+}
+.hotkey-item {
+    margin-right: 20px;
+}
+.hotkey-text, .hotkey-key {
+    display: inline-block;
+    vertical-align: baseline;
+    margin-bottom: 25px ;
+}
+.hotkey-key {
+    text-align: right;
+    width: 35%;
+    padding-right: 20px;
+}
+.hotkey-text {
+    min-width: 140px;
+    width: 60%;
+    margin-right: 15px;
+    padding-left: 25px;
+    color: rgba(0, 0, 0, 0.75);
+}
+
+.hotkey-title {
+    margin: 25px 0px 25px 25px;
+    
+}
+.hotkey-group {
+    width: 50%;
+}
+#docs .title {
+    font-size: 42px;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgba(0,0,0,0.15);
+    padding: 20px 0px;
+    margin: 0px;
+    background-color: rgba(40, 96, 144, 0.21);
+    box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.3);
+}
+
+#node-operation {
+    background-color: rgba(0, 128, 0, 0.15);
+}
+
+#navigation {
+    background-color: rgba(128, 0, 0, 0.15);
+}
 
 
+#hide-doc {
+    display: block;
+    width: 170px;
+    margin: 60px auto;
+}
+}
 /*
 // Color Pallete
 // http://www.colorcombos.com/color-schemes/211/ColorCombo211.html
