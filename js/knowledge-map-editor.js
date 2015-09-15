@@ -219,7 +219,6 @@
             remove: function _remove (you) {
                 if( Tree.map[ you ] && Tree.map[ you ].children ){
                     // Recursively remove your children
-                    console.log("You: ", you);
                     $.each(Tree.map[ you ].children, function(index, child) {
                             _remove(child.name);
                     });
