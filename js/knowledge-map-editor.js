@@ -67,9 +67,14 @@
             // remove the node from tree
             Node.remove($(Tree.targetNode).parent());
 
-            console.log("Removing: ",Node.getContent().text());
+            var nodeName = Node.getContent().text();
+
+            // remove the node from the children array of its parent
+            Data.export.removeFromChildren( nodeName );
+            
             // remove the node from our data ( which will be exported )
-            Data.export.remove(Node.getContent().text())
+            Data.export.remove( nodeName );
+
         },
 
         goParentNode: function () {
@@ -212,8 +217,7 @@
              * remove node from our map
              */
             remove: function _remove (you) {
-                console.log("Removing Node: ", you);
-                if( you && Tree.map[ you ].children ){
+                if( Tree.map[ you ] && Tree.map[ you ].children ){
                     // Recursively remove your children
                     $.each(Tree.map[ you ].children, function(index, child) {
                             _remove(child.name);
@@ -223,6 +227,16 @@
                 delete Tree.map[you];
             },
 
+            removeFromChildren: function ( you ) {
+                var parent = Tree.map[ you ].parent;
+                var parentNode = Tree.map[ parent ];
+
+                if( parent && parentNode ){
+                    parentNode.children = $.grep(parentNode.children, function(node) {
+                        return node.name != you;
+                    });
+                }
+            },
             /*
              * Transform the values of data map into plain array 
              */
@@ -711,7 +725,9 @@
 
             $('#show-preview').click(function () {
                 var clonedRoot = $.extend(true, {}, Tree.rootNode );
+
                 createPreview( clonedRoot );
+
                 $('#knowledge-map').fadeIn('fast');
                 $('#hide-preview').fadeIn('fast');
                 $(this).fadeOut('fast');
@@ -719,6 +735,7 @@
             $('#hide-preview').click(function () {
                 $('#show-preview').fadeIn('fast');
                 $('#knowledge-map').fadeOut('fast');
+                $('#knowledge-map').html("");
                 $(this).fadeOut('fast');
             })
         },
